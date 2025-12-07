@@ -44,7 +44,7 @@
   "homepage": "https://github.com/GustavoAdolfo/minhoteca-core-layer#readme",
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/config-conventional": "^20.2.0",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
