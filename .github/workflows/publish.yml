@@ -1,0 +1,31 @@
+name: Release & Publish
+
+on:
+  push:
+    tags:
+      - 'v1.0.0'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build (TypeScript)
+        run: npm run build
+
+      - name: Publicar no GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
