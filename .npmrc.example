@@ -1,0 +1,15 @@
+# .npmrc.example
+
+# Template para configuração de npm local
+# Copie este arquivo para .npmrc e configure conforme necessário
+
+# Configurar GitHub Packages como registry para pacotes scoped
+@GustavoAdolfo:registry=https://npm.pkg.github.com
+
+# Usar token do GitHub (configure via variável de ambiente ou CLI)
+# Em CI/CD: usar secrets do GitHub
+# Localmente: gerar token em https://github.com/settings/tokens com permissão read:packages
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+
+# Alternativa local (NÃO VERSIONAR):
+# //npm.pkg.github.com/:_authToken=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

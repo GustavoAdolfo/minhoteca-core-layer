@@ -23,6 +23,21 @@ git remote add upstream https://github.com/GustavoAdolfo/minhoteca-core-layer.gi
 npm install
 ```
 
+### 2.1 Configurar GitHub Packages (Opcional)
+
+Se você planeja instalar ou publicar pacotes privados do GitHub:
+
+```bash
+# Copie o template
+cp .npmrc.example .npmrc
+
+# Configure seu token (gere em https://github.com/settings/tokens)
+# Permissões necessárias: read:packages, write:packages
+export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+**Nota:** `.npmrc` é ignorado pelo git por razões de segurança. Cada desenvolvedor deve configurar localmente.
+
 ### 3. Crie uma Branch para sua Feature
 
 ```bash
