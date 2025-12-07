@@ -1,8 +1,8 @@
 import { Entity } from './Entity';
 import { Nome } from '../value-objects/Nome';
-import { Email } from '../value-objects/Email';
 import { Data } from '../value-objects/Data';
 import { generateUUID } from '../utils/uuid';
+import { AutorInvalidoError } from '../errors/DomainErrors';
 
 /**
  * Interface com as propriedades de um Autor
@@ -10,9 +10,8 @@ import { generateUUID } from '../utils/uuid';
 export interface AutorProps {
   nome: Nome;
   biografia?: string;
-  email?: Email;
   dataNascimento?: Data;
-  nacionalidade?: string;
+  pais?: string;
 }
 
 /**
@@ -28,6 +27,9 @@ export class Autor extends Entity<AutorProps> {
    * Factory method para criar um novo Autor
    */
   static create(props: AutorProps, id?: string): Autor {
+    if (!props.nome) {
+      throw new AutorInvalidoError('Nome do autor é obrigatório');
+    }
     const autorId = id || generateUUID();
     return new Autor(autorId, props);
   }
@@ -36,6 +38,9 @@ export class Autor extends Entity<AutorProps> {
    * Factory method para reconstruir um Autor a partir de dados persistidos
    */
   static reconstitute(id: string, props: AutorProps): Autor {
+    if (!props.nome) {
+      throw new AutorInvalidoError('Nome do autor é obrigatório');
+    }
     return new Autor(id, props);
   }
 
@@ -54,22 +59,21 @@ export class Autor extends Entity<AutorProps> {
     return this.props.biografia;
   }
 
-  getEmail(): Email | undefined {
-    return this.props.email;
-  }
-
   getDataNascimento(): Data | undefined {
     return this.props.dataNascimento;
   }
 
-  getNacionalidade(): string | undefined {
-    return this.props.nacionalidade;
+  getPais(): string | undefined {
+    return this.props.pais;
   }
 
   /**
    * Atualiza os dados do autor
    */
   update(props: Partial<AutorProps>): void {
+    if (Object.prototype.hasOwnProperty.call(props, 'nome') && !props.nome) {
+      throw new AutorInvalidoError('Nome do autor é obrigatório');
+    }
     this.props = { ...this.props, ...props };
   }
 

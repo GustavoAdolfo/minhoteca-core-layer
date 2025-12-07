@@ -6,9 +6,8 @@ export interface AutorDTO {
   id: string;
   nome: string;
   biografia?: string;
-  email?: string;
   dataNascimento?: string;
-  nacionalidade?: string;
+  pais?: string;
 }
 
 /**
@@ -17,9 +16,8 @@ export interface AutorDTO {
 export interface CriarAutorDTO {
   nome: string;
   biografia?: string;
-  email?: string;
   dataNascimento?: string;
-  nacionalidade?: string;
+  pais?: string;
 }
 
 /**
@@ -28,7 +26,6 @@ export interface CriarAutorDTO {
 export interface AtualizarAutorDTO {
   nome?: string;
   biografia?: string;
-  email?: string;
   dataNascimento?: string;
-  nacionalidade?: string;
+  pais?: string;
 }

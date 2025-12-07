@@ -1,7 +1,6 @@
 import { Autor, AutorProps } from '../entities/Autor';
 import { AutorDTO, CriarAutorDTO } from '../dtos/AutorDTO';
 import { Nome } from '../value-objects/Nome';
-import { Email } from '../value-objects/Email';
 import { Data } from '../value-objects/Data';
 
 /**
@@ -18,9 +17,8 @@ export class AutorAdapter {
       id: autor.getId(),
       nome: props.nome.toString(),
       biografia: props.biografia,
-      email: props.email?.toString(),
       dataNascimento: props.dataNascimento?.toPrimitive(),
-      nacionalidade: props.nacionalidade
+      pais: props.pais,
     };
   }
 
@@ -31,9 +29,8 @@ export class AutorAdapter {
     return {
       nome: new Nome(dto.nome),
       biografia: dto.biografia,
-      email: dto.email ? new Email(dto.email) : undefined,
       dataNascimento: dto.dataNascimento ? new Data(dto.dataNascimento) : undefined,
-      nacionalidade: dto.nacionalidade
+      pais: dto.pais,
     };
   }
 

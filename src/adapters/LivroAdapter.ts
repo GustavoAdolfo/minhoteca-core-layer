@@ -2,7 +2,6 @@ import { Livro, LivroProps, StatusLivro } from '../entities/Livro';
 import { LivroDTO, CriarLivroDTO } from '../dtos/LivroDTO';
 import { Nome } from '../value-objects/Nome';
 import { ISBN } from '../value-objects/ISBN';
-import { Data } from '../value-objects/Data';
 
 /**
  * Adapter para converter entre Livro (entity) e LivroDTO (DTO)
@@ -20,12 +19,11 @@ export class LivroAdapter {
       autorId: props.autorId,
       editoraId: props.editoraId,
       anoPublicacao: props.anoPublicacao,
-      descricao: props.descricao,
-      dataAquisicao: props.dataAquisicao.toPrimitive(),
+      descricao: props.sinopse,
       status: props.status,
       localizacao: props.localizacao,
       criadoEm: props.criadoEm.toISOString(),
-      atualizadoEm: props.atualizadoEm.toISOString()
+      atualizadoEm: props.atualizadoEm.toISOString(),
     };
   }
 
@@ -39,10 +37,9 @@ export class LivroAdapter {
       autorId: dto.autorId,
       editoraId: dto.editoraId,
       anoPublicacao: dto.anoPublicacao,
-      descricao: dto.descricao,
-      dataAquisicao: new Data(dto.dataAquisicao),
+      sinopse: dto.descricao,
       status: (dto.status as StatusLivro) || StatusLivro.DISPONIVEL,
-      localizacao: dto.localizacao
+      localizacao: dto.localizacao,
     };
   }
 

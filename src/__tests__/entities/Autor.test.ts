@@ -1,60 +1,62 @@
 import { Autor } from '../../entities/Autor';
 import { Nome } from '../../value-objects/Nome';
-import { Email } from '../../value-objects/Email';
 import { Data } from '../../value-objects/Data';
+
+const defaultNome = new Nome('Paulo Coelho');
+const defaultPais = 'Brasil';
+const defaultBiografia = 'Autor brasileiro reconhecido internacionalmente';
+const defaultNascimento = new Data('1947-08-24');
 
 describe('Autor Entity', () => {
   it('deve criar um novo autor', () => {
     const autorProps = {
-      nome: new Nome('Paulo Coelho'),
-      nacionalidade: 'Brasileiro'
+      nome: defaultNome,
+      pais: defaultPais,
     };
 
     const autor = Autor.create(autorProps);
 
     expect(autor.getId()).toBeDefined();
-    expect(autor.getNome().toString()).toBe('Paulo Coelho');
-    expect(autor.getNacionalidade()).toBe('Brasileiro');
+    expect(autor.getNome().toString()).toBe(autorProps.nome.toString());
+    expect(autor.getPais()).toBe(autorProps.pais);
   });
 
   it('deve criar um autor com todos os dados', () => {
     const autorProps = {
-      nome: new Nome('Paulo Coelho'),
-      biografia: 'Escritor e poeta português',
-      email: new Email('paulo@exemplo.com'),
-      dataNascimento: new Data('1947-08-24'),
-      nacionalidade: 'Português'
+      nome: defaultNome,
+      biografia: defaultBiografia,
+      dataNascimento: defaultNascimento,
+      pais: defaultPais,
     };
 
     const autor = Autor.create(autorProps);
 
-    expect(autor.getNome().toString()).toBe('Paulo Coelho');
-    expect(autor.getBiografia()).toBe('Escritor e poeta português');
-    expect(autor.getEmail()?.toString()).toBe('paulo@exemplo.com');
-    expect(autor.getNacionalidade()).toBe('Português');
+    expect(autor.getNome().toString()).toBe(autorProps.nome.toString());
+    expect(autor.getBiografia()).toBe(autorProps.biografia);
+    expect(autor.getPais()).toBe(autorProps.pais);
   });
 
   it('deve reconstruir um autor existente', () => {
     const id = 'autor-123';
     const autorProps = {
-      nome: new Nome('Paulo Coelho'),
-      nacionalidade: 'Português'
+      nome: defaultNome,
+      pais: defaultPais,
     };
 
     const autor = Autor.reconstitute(id, autorProps);
 
     expect(autor.getId()).toBe('autor-123');
-    expect(autor.getNome().toString()).toBe('Paulo Coelho');
+    expect(autor.getNome().toString()).toBe(autorProps.nome.toString());
   });
 
   it('deve atualizar dados do autor', () => {
     const autorProps = {
-      nome: new Nome('Paulo Coelho'),
-      nacionalidade: 'Português'
+      nome: defaultNome,
+      pais: defaultPais,
     };
 
     const autor = Autor.create(autorProps);
-    const novaBiografia = 'Um dos autores mais lidos do mundo';
+    const novaBiografia = 'Novo resumo de biografia';
 
     autor.update({ biografia: novaBiografia });
 
@@ -63,7 +65,7 @@ describe('Autor Entity', () => {
 
   it('deve comparar dois autores pelo ID', () => {
     const autorProps = {
-      nome: new Nome('Paulo Coelho')
+      nome: defaultNome,
     };
 
     const id = 'autor-123';
@@ -75,7 +77,7 @@ describe('Autor Entity', () => {
 
   it('deve identificar autores diferentes', () => {
     const autorProps = {
-      nome: new Nome('Paulo Coelho')
+      nome: defaultNome,
     };
 
     const autor1 = Autor.reconstitute('autor-123', autorProps);
@@ -86,13 +88,50 @@ describe('Autor Entity', () => {
 
   it('deve retornar representação em string', () => {
     const autorProps = {
-      nome: new Nome('Paulo Coelho')
+      nome: defaultNome,
+      biografia: defaultBiografia,
+      dataNascimento: defaultNascimento,
+      pais: defaultPais,
     };
 
     const autor = Autor.create(autorProps);
     const str = autor.toString();
 
-    expect(str).toContain('Paulo Coelho');
+    expect(str).toContain(autorProps.nome.toString());
     expect(str).toContain('Autor');
+  });
+
+  it('deve manter dados opcionais quando atualizados', () => {
+    const autor = Autor.create({ nome: defaultNome });
+
+    autor.update({
+      biografia: defaultBiografia,
+      dataNascimento: defaultNascimento,
+      pais: defaultPais,
+    });
+
+    expect(autor.getBiografia()).toBe(defaultBiografia);
+    expect(autor.getDataNascimento()).toBe(defaultNascimento);
+    expect(autor.getPais()).toBe(defaultPais);
+  });
+
+  it('deve lançar erro ao criar autor sem nome', () => {
+    expect(() => {
+      Autor.create({ nome: null as unknown as Nome });
+    }).toThrow('Nome do autor é obrigatório');
+  });
+
+  it('deve lançar erro ao reconstruir autor sem nome', () => {
+    expect(() => {
+      Autor.reconstitute('autor-123', { nome: null as unknown as Nome });
+    }).toThrow('Nome do autor é obrigatório');
+  });
+
+  it('deve lançar erro ao atualizar autor removendo nome', () => {
+    const autor = Autor.create({ nome: defaultNome });
+
+    expect(() => {
+      autor.update({ nome: null as unknown as Nome });
+    }).toThrow('Nome do autor é obrigatório');
   });
 });

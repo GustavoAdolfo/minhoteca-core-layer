@@ -9,7 +9,6 @@ export interface LivroDTO {
   editoraId: string;
   anoPublicacao: number;
   descricao?: string;
-  dataAquisicao: string;
   status: string;
   localizacao?: string;
   criadoEm: string;
@@ -26,7 +25,6 @@ export interface CriarLivroDTO {
   editoraId: string;
   anoPublicacao: number;
   descricao?: string;
-  dataAquisicao: string;
   status?: string;
   localizacao?: string;
 }
