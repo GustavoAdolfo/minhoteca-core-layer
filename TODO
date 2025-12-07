@@ -1,0 +1,7 @@
+TODO: Adicione um CONTRIBUTING.md (mesmo que simples, orientando sobre branchs, PRs, convenção de commits, etc).
+TODO: Já que é um repositório para layer, futuramente um exemplo de build/deploy para AWS Lambda Layer (mesmo que apenas no README).
+TODO: Quando começar a adicionar código, inclua testes básicos em /tests/ e exemplos em /src/.
+TODO: Considere adicionar um CHANGELOG.md para rastrear evolução e releases.
+TODO: Adicione badges (Build/CI, License, npm) no topo do README para facilitar comunicação do status do projeto.
+TODO: Implemente e exponha ao menos um workflow básico de CI (build, lint, test), como sugerido nas respostas anteriores.
+TODO: Documente (quando aplicável) práticas para empacotamento e deploy da layer em ambientes AWS.

@@ -1,0 +1,57 @@
+{
+  "name": "@GustavoAdolfo/minhoteca-core-layer",
+  "version": "0.1.0",
+  "description": "Camada principal de entidades, objetos de valor e DTOs do projeto Minhoteca",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "clean": "rm -rf dist coverage",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "minhoteca",
+    "biblioteca",
+    "comunidade",
+    "typescript",
+    "entities",
+    "value-objects",
+    "dto"
+  ],
+  "author": "Gustavo Adolfo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer/issues"
+  },
+  "homepage": "https://github.com/GustavoAdolfo/minhoteca-core-layer#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
