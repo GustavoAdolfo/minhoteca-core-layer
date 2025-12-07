@@ -8,6 +8,13 @@ Esperamos que todos os colaboradores sigam um comportamento respeitoso e inclusi
 
 ## 🚀 Como Começar
 
+### 0. Pré-requisitos
+
+- Node.js **22+** (LTS mais recente)
+- npm 10+
+
+> A toolchain está alinhada para Node 22+. O TypeScript está fixado na linha 5.5.x (mais alta suportada pelo stack @typescript-eslint atual) para garantir compatibilidade de linting.
+
 ### 1. Fork e Clone
 
 ```bash
@@ -46,6 +53,7 @@ npx husky install
 ```
 
 Os hooks fazem:
+
 - `pre-commit`: roda `lint-staged` (Prettier + ESLint nos arquivos staged)
 - `commit-msg`: roda `commitlint` (convenção Conventional Commits)
 
@@ -58,6 +66,7 @@ git checkout -b fix/minha-correcao
 ```
 
 **Padrão de naming:**
+
 - `feature/` para novas features
 - `fix/` para correções de bugs
 - `docs/` para documentação
@@ -110,6 +119,7 @@ refactor: simplificar lógica de comparação
 ```
 
 **Formato:**
+
 ```
 <tipo>(<escopo>): <assunto resumido>
 
@@ -127,6 +137,7 @@ git push origin feature/minha-feature
 ```
 
 Então abra um Pull Request no GitHub com:
+
 - Título claro e descritivo
 - Descrição detalhada do que foi mudado e por quê
 - Referência a issues relacionadas (ex: `Fixes #123`)
@@ -182,7 +193,9 @@ export class Livro extends Entity<LivroProps> {
 ```typescript
 describe('Livro Entity', () => {
   it('deve criar um novo livro', () => {
-    const props = { /* ... */ };
+    const props = {
+      /* ... */
+    };
     const livro = Livro.create(props);
     expect(livro.getId()).toBeDefined();
   });
@@ -214,12 +227,15 @@ Atualize `CHANGELOG.md` com suas mudanças. Formato:
 ## [1.1.0] - 2024-12-15
 
 ### Added
+
 - Nova feature X
 
 ### Fixed
+
 - Correção para bug Y
 
 ### Changed
+
 - Comportamento alterado em Z
 ```
 
