@@ -1,7 +1,31 @@
-TODO: Adicione um CONTRIBUTING.md (mesmo que simples, orientando sobre branchs, PRs, convenção de commits, etc).
-TODO: Já que é um repositório para layer, futuramente um exemplo de build/deploy para AWS Lambda Layer (mesmo que apenas no README).
-TODO: Quando começar a adicionar código, inclua testes básicos em /tests/ e exemplos em /src/.
-TODO: Considere adicionar um CHANGELOG.md para rastrear evolução e releases.
-TODO: Adicione badges (Build/CI, License, npm) no topo do README para facilitar comunicação do status do projeto.
-TODO: Implemente e exponha ao menos um workflow básico de CI (build, lint, test), como sugerido nas respostas anteriores.
-TODO: Documente (quando aplicável) práticas para empacotamento e deploy da layer em ambientes AWS.
+✅ COMPLETED (v0.1.0):
+
+✅ Estrutura base do projeto com TypeScript, ESLint, Jest
+✅ Implementação de Value Objects (ISBN, Email, Nome, Data)
+✅ Implementação de Entities (Livro, Autor, Editora)
+✅ DTOs e Adapters para conversão
+✅ Erros customizados de domínio
+✅ Suite completa de testes (61 testes, 70%+ cobertura)
+✅ CI/CD workflows (build, lint, test)
+✅ Workflow de release automático ao criar tags
+✅ Configuração de Dependabot
+✅ Documentação técnica completa
+✅ CONTRIBUTING.md com diretrizes de contribuição
+✅ CHANGELOG.md com versionamento
+✅ README.md atualizado com propósito social
+
+📋 PRÓXIMOS PASSOS (v0.2.0):
+
+- [ ] Entidade Empréstimo
+- [ ] Entidade Reserva
+- [ ] Repository interfaces
+- [ ] DynamoDB examples
+- [ ] AWS SDK helpers
+
+🎯 MELHORIAS FUTURAS:
+
+- [ ] Event Sourcing
+- [ ] CQRS patterns
+- [ ] GraphQL types
+- [ ] Rate limiting
+- [ ] Logging helpers
