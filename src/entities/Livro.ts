@@ -1,7 +1,6 @@
 import { Entity } from './Entity';
 import { Nome } from '../value-objects/Nome';
 import { ISBN } from '../value-objects/ISBN';
-import { Data } from '../value-objects/Data';
 import { LivroInvalidoError } from '../errors/DomainErrors';
 import { generateUUID } from '../utils/uuid';
 
@@ -12,7 +11,7 @@ export enum StatusLivro {
   DISPONIVEL = 'DISPONIVEL',
   EMPRESTADO = 'EMPRESTADO',
   DANIFICADO = 'DANIFICADO',
-  DESCARTADO = 'DESCARTADO'
+  DESCARTADO = 'DESCARTADO',
 }
 
 /**
@@ -24,8 +23,7 @@ export interface LivroProps {
   autorId: string;
   editoraId: string;
   anoPublicacao: number;
-  descricao?: string;
-  dataAquisicao: Data;
+  sinopse?: string;
   status: StatusLivro;
   localizacao?: string; // Localização física na biblioteca (ex: Prateleira A-3)
   criadoEm: Date;
@@ -45,10 +43,7 @@ export class Livro extends Entity<LivroProps> {
   /**
    * Factory method para criar um novo Livro
    */
-  static create(
-    props: Omit<LivroProps, 'criadoEm' | 'atualizadoEm'>,
-    id?: string
-  ): Livro {
+  static create(props: Omit<LivroProps, 'criadoEm' | 'atualizadoEm'>, id?: string): Livro {
     this.validarPropriedades(props);
 
     const livroId = id || this.generateId();
@@ -57,7 +52,7 @@ export class Livro extends Entity<LivroProps> {
     const propsCompletas: LivroProps = {
       ...props,
       criadoEm: agora,
-      atualizadoEm: agora
+      atualizadoEm: agora,
     };
 
     return new Livro(livroId, propsCompletas);
@@ -73,13 +68,9 @@ export class Livro extends Entity<LivroProps> {
   /**
    * Valida as propriedades antes de criar um Livro
    */
-  private static validarPropriedades(
-    props: Omit<LivroProps, 'criadoEm' | 'atualizadoEm'>
-  ): void {
+  private static validarPropriedades(props: Omit<LivroProps, 'criadoEm' | 'atualizadoEm'>): void {
     if (props.anoPublicacao < 1000 || props.anoPublicacao > new Date().getFullYear()) {
-      throw new LivroInvalidoError(
-        `Ano de publicação inválido: ${props.anoPublicacao}`
-      );
+      throw new LivroInvalidoError(`Ano de publicação inválido: ${props.anoPublicacao}`);
     }
   }
 
@@ -111,11 +102,7 @@ export class Livro extends Entity<LivroProps> {
   }
 
   getDescricao(): string | undefined {
-    return this.props.descricao;
-  }
-
-  getDataAquisicao(): Data {
-    return this.props.dataAquisicao;
+    return this.props.sinopse;
   }
 
   getStatus(): StatusLivro {
@@ -144,9 +131,7 @@ export class Livro extends Entity<LivroProps> {
    */
   devolver(): void {
     if (this.props.status !== StatusLivro.EMPRESTADO) {
-      throw new LivroInvalidoError(
-        `Não é possível devolver livro com status ${this.props.status}`
-      );
+      throw new LivroInvalidoError(`Não é possível devolver livro com status ${this.props.status}`);
     }
     this.props.status = StatusLivro.DISPONIVEL;
     this.props.atualizadoEm = new Date();
