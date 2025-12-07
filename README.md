@@ -24,11 +24,11 @@ Este projeto é [Open Source](./LICENSE) e incentiva a colaboração para promov
 
 1. Instale como dependência npm:
     ```bash
-    npm install @seuusuario/minhoteca-core-layer
+    npm install @GustavoAdolfo/minhoteca-core-layer
     ```
 2. Importe os modelos em seu projeto:
     ```typescript
-    import { Livro, Autor } from '@seuusuario/minhoteca-core-layer/entities';
+    import { Livro, Autor } from '@GustavoAdolfo/minhoteca-core-layer/entities';
     ```
 3. [Veja a documentação técnica aqui.](/docs)
 
