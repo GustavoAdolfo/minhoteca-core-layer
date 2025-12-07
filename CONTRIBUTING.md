@@ -38,12 +38,23 @@ export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 **Nota:** `.npmrc` é ignorado pelo git por razões de segurança. Cada desenvolvedor deve configurar localmente.
 
+### 2.2 Configurar hooks do Husky (pré-commit e commit-msg)
+
+```bash
+# (recomendado) rodar após o npm install caso precise reinstalar os hooks
+npx husky install
+```
+
+Os hooks fazem:
+- `pre-commit`: roda `lint-staged` (Prettier + ESLint nos arquivos staged)
+- `commit-msg`: roda `commitlint` (convenção Conventional Commits)
+
 ### 3. Crie uma Branch para sua Feature
 
 ```bash
 git checkout -b feature/minha-feature
 # ou
-git checkout -b fix/meu-correcao
+git checkout -b fix/minha-correcao
 ```
 
 **Padrão de naming:**
@@ -70,6 +81,13 @@ npm run test:watch   # Modo watch
 ```bash
 npm run lint       # Verificar estilo
 npm run lint:fix   # Auto-corrigir problemas
+```
+
+### 2.1 Formatação (Prettier)
+
+```bash
+npm run format        # Formata arquivos suportados
+npm run format:check  # Verifica formatação
 ```
 
 ### 3. Compile o TypeScript
@@ -99,6 +117,8 @@ refactor: simplificar lógica de comparação
 
 <referências a issues>
 ```
+
+**Validação automática:** O hook `commit-msg` roda `commitlint` e recusa commits fora do padrão.
 
 ### 5. Push e Abra um PR
 
@@ -172,7 +192,7 @@ describe('Livro Entity', () => {
 ## 🔄 Processo de Review
 
 1. GitHub Actions vai rodar testes, linter e build
-2. Pelo menos um mantenedor reviará o PR
+2. Pelo menos um mantenedor revisará o PR
 3. Resolva comentários e sugestões
 4. Após aprovação, seu PR será mergeado
 
@@ -211,7 +231,7 @@ Atualize `CHANGELOG.md` com suas mudanças. Formato:
 
 ## ❓ Dúvidas?
 
-Abra uma [Issue](https://github.com/GustavoAdolfo/minhoteca-core-layer/issues) ou discuta na seção de Discussions.
+Abra uma [Issue](https://github.com/GustavoAdolfo/minhoteca-core-layer/issues) ou discuta na seção de Discussões.
 
 ---
 
