@@ -10,7 +10,7 @@ A **minhoteca-core-layer** é uma camada compartilhada de entidades, objetos de 
 
 ```
 ┌─────────────────────────┐
-│   APIs / Lambdas        │  (Consumem a layer)
+│   APIs / Lambdas        │  (Consomem a layer)
 ├─────────────────────────┤
 │  minhoteca-core-layer   │  (Esta library)
 │  - Entities             │
