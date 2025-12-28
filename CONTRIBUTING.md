@@ -13,7 +13,7 @@ Esperamos que todos os colaboradores sigam um comportamento respeitoso e inclusi
 - Node.js **22+** (LTS mais recente)
 - npm 10+
 
-> A toolchain está alinhada para Node 22+. O TypeScript está fixado na linha 5.5.x (mais alta suportada pelo stack @typescript-eslint atual) para garantir compatibilidade de linting.
+> A toolchain está alinhada para Node 22+. O TypeScript está fixado na linha 5.5.x por estabilidade (embora o stack @typescript-eslint atual suporte até 5.6.x) para garantir compatibilidade de linting.
 
 ### 1. Fork e Clone
 
