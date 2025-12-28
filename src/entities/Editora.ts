@@ -2,30 +2,33 @@ import { Entity } from './Entity';
 import { Nome } from '../value-objects/Nome';
 import { Email } from '../value-objects/Email';
 import { generateUUID } from '../utils/uuid';
-
-/**
- * Interface com as propriedades de uma Editora
- */
-export interface EditoraProps {
-  nome: Nome;
-  email?: Email;
-  website?: string;
-  pais?: string;
-}
+import { EditoraInterface } from '../interfaces/editora.interface';
 
 /**
  * Entidade Editora
  * Representa uma editora no sistema Minhoteca
  */
-export class Editora extends Entity<EditoraProps> {
-  private constructor(id: string, props: EditoraProps) {
-    super(id, props);
+export class Editora extends Entity {
+  nome: Nome;
+  email: Email | undefined;
+  website: string | undefined;
+  pais: string | undefined;
+  logoUrl: string | undefined;
+
+  private constructor(id: string, props: EditoraInterface) {
+    super(id);
+    this.nome = new Nome(props.nome);
+    this.email =
+      props.email === undefined || !props.email?.trim() ? undefined : new Email(props.email);
+    this.website = props.website;
+    this.pais = props.pais;
+    this.logoUrl = props.logoUrl;
   }
 
   /**
    * Factory method para criar uma nova Editora
    */
-  static create(props: EditoraProps, id?: string): Editora {
+  static create(props: EditoraInterface, id?: string): Editora {
     const editoraId = id || generateUUID();
     return new Editora(editoraId, props);
   }
@@ -33,41 +36,63 @@ export class Editora extends Entity<EditoraProps> {
   /**
    * Factory method para reconstruir uma Editora a partir de dados persistidos
    */
-  static reconstitute(id: string, props: EditoraProps): Editora {
+  static reconstitute(id: string, props: EditoraInterface): Editora {
     return new Editora(id, props);
   }
 
-  /**
-   * Gera um ID único para nova Editora (UUID v4)
-   */
-  private static generateId(): string {
-    return generateUUID();
-  }
-
   getNome(): Nome {
-    return this.props.nome;
+    return this.nome;
   }
 
   getEmail(): Email | undefined {
-    return this.props.email;
+    return this.email;
   }
 
   getWebsite(): string | undefined {
-    return this.props.website;
+    return this.website;
   }
 
   getPais(): string | undefined {
-    return this.props.pais;
+    return this.pais;
   }
 
-  /**
-   * Atualiza os dados da editora
-   */
-  update(props: Partial<EditoraProps>): void {
-    this.props = { ...this.props, ...props };
+  getLogoUrl(): string | undefined {
+    return this.logoUrl;
   }
 
-  toString(): string {
-    return `Editora(id: ${this.id}, nome: ${this.props.nome.toString()})`;
+  update(props: Partial<EditoraInterface>): void {
+    this.nome = props.nome ? new Nome(props.nome) : this.nome;
+    this.email = props.email ? new Email(props.email) : this.email;
+    this.website = props.website ?? this.website;
+    this.pais = props.pais ?? this.pais;
+    this.logoUrl = props.logoUrl ?? this.logoUrl;
+  }
+
+  toJSONString(): string {
+    return JSON.stringify({
+      id: this.id,
+      nome: this.nome.toString(),
+      email: this.email ? this.email.toString() : undefined,
+      website: this.website,
+      pais: this.pais,
+      logoUrl: this.logoUrl,
+    });
+  }
+
+  equals(entity: Entity): boolean {
+    if (!(entity instanceof Editora)) {
+      return false;
+    }
+    if (!super.equals(entity)) {
+      return false;
+    }
+    return (
+      this.nome.equals(entity.nome) &&
+      ((this.email && entity.email && this.email.equals(entity.email)) ||
+        (!this.email && !entity.email)) &&
+      this.website === entity.website &&
+      this.pais === entity.pais &&
+      this.logoUrl === entity.logoUrl
+    );
   }
 }

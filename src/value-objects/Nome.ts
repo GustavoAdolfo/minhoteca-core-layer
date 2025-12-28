@@ -12,11 +12,15 @@ export class Nome extends ValueObject {
   constructor(value: string) {
     super();
     this.validate(value);
-    this.value = value.trim();
+    this.value = value?.trim();
   }
 
   private validate(value: string): void {
-    const trimmed = value.trim();
+    if (!value) {
+      throw new Error('Nome é obrigatório');
+    }
+
+    const trimmed = value?.trim();
 
     if (trimmed.length < Nome.MIN_LENGTH) {
       throw new Error(`Nome deve ter no mínimo ${Nome.MIN_LENGTH} caracteres`);
@@ -40,5 +44,9 @@ export class Nome extends ValueObject {
 
   toString(): string {
     return this.value;
+  }
+
+  toJSON(): string {
+    return this.toPrimitive();
   }
 }

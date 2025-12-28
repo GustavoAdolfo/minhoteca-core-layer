@@ -1,30 +1,28 @@
-/**
- * DTO para representar uma Editora em APIs
- */
-export interface EditoraDTO {
-  id: string;
-  nome: string;
-  email?: string;
-  website?: string;
-  pais?: string;
-}
-
-/**
- * DTO para criar uma nova Editora
- */
-export interface CriarEditoraDTO {
-  nome: string;
-  email?: string;
-  website?: string;
-  pais?: string;
-}
-
-/**
- * DTO para atualizar uma Editora
- */
-export interface AtualizarEditoraDTO {
+export class EditoraDTO {
+  id?: string;
   nome?: string;
   email?: string;
   website?: string;
   pais?: string;
+  logoUrl?: string;
+
+  constructor(data: object) {
+    this.id = Object.getOwnPropertyDescriptor(data, 'id')?.value ?? undefined;
+    this.nome = Object.getOwnPropertyDescriptor(data, 'nome')?.value ?? undefined;
+    this.email = Object.getOwnPropertyDescriptor(data, 'email')?.value ?? undefined;
+    this.website = Object.getOwnPropertyDescriptor(data, 'website')?.value ?? undefined;
+    this.pais = Object.getOwnPropertyDescriptor(data, 'pais')?.value ?? undefined;
+    this.logoUrl = Object.getOwnPropertyDescriptor(data, 'logoUrl')?.value ?? undefined;
+  }
+
+  toString(): string {
+    return JSON.stringify({
+      id: this.id,
+      nome: this.nome,
+      email: this.email,
+      website: this.website,
+      pais: this.pais,
+      logoUrl: this.logoUrl,
+    });
+  }
 }

@@ -35,4 +35,8 @@ export class Email extends ValueObject {
   toString(): string {
     return this.value;
   }
+
+  toJSON(): string {
+    return this.toPrimitive();
+  }
 }

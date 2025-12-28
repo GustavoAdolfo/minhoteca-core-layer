@@ -16,7 +16,7 @@ describe('Nome Value Object', () => {
   });
 
   it('deve lançar erro para nome vazio', () => {
-    expect(() => new Nome('')).toThrow('Nome deve ter no mínimo 2 caracteres');
+    expect(() => new Nome('')).toThrow('Nome é obrigatório');
   });
 
   it('deve lançar erro para nome muito longo', () => {
