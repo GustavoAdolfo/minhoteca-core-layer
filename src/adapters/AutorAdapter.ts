@@ -1,42 +1,47 @@
-import { Autor, AutorProps } from '../entities/Autor';
-import { AutorDTO, CriarAutorDTO } from '../dtos/AutorDTO';
-import { Nome } from '../value-objects/Nome';
-import { Data } from '../value-objects/Data';
+import { Autor } from '../entities/Autor';
+import { AutorDTO } from '../dtos/AutorDTO';
+import { AutorInterface } from '../interfaces/autor.interface';
 
 /**
  * Adapter para converter entre Autor (entity) e AutorDTO (DTO)
  * Adapters facilitam a transformação entre diferentes representações de dados
  */
 export class AutorAdapter {
-  /**
-   * Converte uma Entity Autor para DTO
-   */
   static toDTO(autor: Autor): AutorDTO {
-    const props = autor.getProps();
-    return {
+    return new AutorDTO({
       id: autor.getId(),
-      nome: props.nome.toString(),
-      biografia: props.biografia,
-      dataNascimento: props.dataNascimento?.toPrimitive(),
-      pais: props.pais,
-    };
+      name: autor.getName(),
+      defaultPictureUrl: autor.getDefaultPictureUrl(),
+      mobilePictureUrl: autor.getMobilePictureUrl(),
+      externalUrl: autor.getExternalUrl(),
+      countryName: autor.getCountryName(),
+      countryPortugueseName: autor.getCountryPortugueseName(),
+      isoAlpha3: autor.getIsoAlpha3(),
+      countryId: autor.getCountryId(),
+      flag: autor.getFlag(),
+      totalBooks: autor.getTotalBooks() ?? 0,
+      reviewPending: autor.getReviewPending(),
+    });
   }
 
-  /**
-   * Converte um DTO de criação para props de Entity
-   */
-  static fromCreateDTO(dto: CriarAutorDTO): AutorProps {
-    return {
-      nome: new Nome(dto.nome),
-      biografia: dto.biografia,
-      dataNascimento: dto.dataNascimento ? new Data(dto.dataNascimento) : undefined,
-      pais: dto.pais,
+  static fromCreateDTO(dto: AutorDTO): Autor {
+    const data: AutorInterface = {
+      name: dto.name ?? '',
+      defaultPictureUrl: dto.defaultPictureUrl,
+      mobilePictureUrl: dto.mobilePictureUrl,
+      externalUrl: dto.externalUrl,
+      countryName: dto.countryName,
+      countryPortugueseName: dto.countryPortugueseName,
+      isoAlpha3: dto.isoAlpha3,
+      countryId: dto.countryId,
+      flag: dto.flag,
+      totalBooks: dto.totalBooks,
+      reviewPending: dto.reviewPending,
     };
+
+    return Autor.create(data, dto.id);
   }
 
-  /**
-   * Converte uma lista de Autores para lista de DTOs
-   */
   static toDTOList(autores: Autor[]): AutorDTO[] {
     return autores.map((autor) => this.toDTO(autor));
   }

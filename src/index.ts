@@ -8,7 +8,7 @@ export { Data } from './value-objects/Data';
 // Entities
 export { Entity } from './entities/Entity';
 export { Autor, type AutorProps } from './entities/Autor';
-export { Editora, type EditoraProps } from './entities/Editora';
+export { Editora, type EditoraInterface as EditoraProps } from './entities/Editora';
 export { Livro, StatusLivro, type LivroProps } from './entities/Livro';
 
 // DTOs
@@ -26,5 +26,5 @@ export {
   DomainError,
   LivroInvalidoError,
   AutorInvalidoError,
-  EditoraInvalidaError
+  EditoraInvalidaError,
 } from './errors/DomainErrors';
