@@ -9,31 +9,31 @@ import { AutorInterface } from '../interfaces/autor.interface';
  * Representa um autor de livros no sistema Minhoteca
  */
 export class Autor extends Entity {
-  protected name: Nome;
-  protected defaultPictureUrl?: string;
-  protected mobilePictureUrl?: string;
-  protected externalUrl?: string;
-  protected countryName?: string;
-  protected countryPortugueseName?: string;
+  protected nome: Nome;
+  protected imagemPadrao?: string;
+  protected imagemDispositivos?: string;
+  protected urlReferencia?: string;
+  protected nomePais?: string;
+  protected nomePaisPortugues?: string;
   protected isoAlpha3?: string;
-  protected countryId?: number;
-  protected flag?: string;
-  protected totalBooks: number = 0;
-  protected reviewPending: boolean = false;
+  protected idPais?: number;
+  protected bandeira?: string;
+  protected totalLivros: number = 0;
+  protected revisar: boolean = false;
 
   private constructor(id: string, props: AutorInterface) {
     super(id);
-    this.name = new Nome(props.name);
-    this.defaultPictureUrl = props.defaultPictureUrl;
-    this.mobilePictureUrl = props.mobilePictureUrl;
-    this.externalUrl = props.externalUrl;
-    this.countryName = props.countryName;
-    this.countryPortugueseName = props.countryPortugueseName;
+    this.nome = new Nome(props.nome);
+    this.imagemPadrao = props.imagemPadrao;
+    this.imagemDispositivos = props.imagemDispositivos;
+    this.urlReferencia = props.urlReferencia;
+    this.nomePais = props.nomePais;
+    this.nomePaisPortugues = props.nomePaisPortugues;
     this.isoAlpha3 = props.isoAlpha3;
-    this.countryId = props.countryId;
-    this.flag = props.flag;
-    this.totalBooks = props.totalBooks ?? 0;
-    this.reviewPending = props.reviewPending ?? false;
+    this.idPais = props.idPais;
+    this.bandeira = props.bandeira;
+    this.totalLivros = props.totalLivros ?? 0;
+    this.revisar = props.revisar ?? false;
   }
 
   /**
@@ -54,74 +54,74 @@ export class Autor extends Entity {
     return new Autor(id, props);
   }
 
-  getName(): string {
-    return this.name.toString();
+  getNome(): string {
+    return this.nome.toString();
   }
 
-  getDefaultPictureUrl(): string | undefined {
-    return this.defaultPictureUrl;
+  getImagemPadrao(): string | undefined {
+    return this.imagemPadrao;
   }
 
-  getMobilePictureUrl(): string | undefined {
-    return this.mobilePictureUrl;
+  getImagemDispositivos(): string | undefined {
+    return this.imagemDispositivos;
   }
 
-  getCountryName(): string | undefined {
-    return this.countryName;
+  getNomePais(): string | undefined {
+    return this.nomePais;
   }
 
-  getExternalUrl(): string | undefined {
-    return this.externalUrl;
+  getUrlReferencia(): string | undefined {
+    return this.urlReferencia;
   }
 
-  getCountryPortugueseName(): string | undefined {
-    return this.countryPortugueseName;
+  getNomePaisPortugues(): string | undefined {
+    return this.nomePaisPortugues;
   }
 
   getIsoAlpha3(): string | undefined {
     return this.isoAlpha3;
   }
 
-  getCountryId(): number | undefined {
-    return this.countryId;
+  getIdPais(): number | undefined {
+    return this.idPais;
   }
 
-  getFlag(): string | undefined {
-    return this.flag;
+  getBandeira(): string | undefined {
+    return this.bandeira;
   }
 
-  getTotalBooks(): number | undefined {
-    return this.totalBooks;
+  getTotalLivros(): number | undefined {
+    return this.totalLivros;
   }
 
-  getReviewPending(): boolean {
-    return this.reviewPending;
+  getRevisar(): boolean {
+    return this.revisar;
   }
 
   update(props: Partial<AutorInterface>): void {
-    if (Object.prototype.hasOwnProperty.call(props, 'name') && !props.name) {
+    if (Object.prototype.hasOwnProperty.call(props, 'nome') && !props.nome) {
       throw new AutorInvalidoError('Nome do autor é obrigatório');
     }
-    this.name = props.name ? new Nome(props.name) : this.name;
-    this.defaultPictureUrl = props.defaultPictureUrl ?? this.defaultPictureUrl;
-    this.mobilePictureUrl = props.mobilePictureUrl ?? this.mobilePictureUrl;
-    this.countryName = props.countryName ?? this.countryName;
+    this.nome = props.nome ? new Nome(props.nome) : this.nome;
+    this.imagemPadrao = props.imagemPadrao ?? this.imagemPadrao;
+    this.imagemDispositivos = props.imagemDispositivos ?? this.imagemDispositivos;
+    this.nomePais = props.nomePais ?? this.nomePais;
   }
 
   toJSONString(): string {
     return JSON.stringify({
       id: this.id,
-      name: this.name.toString(),
-      defaultPictureUrl: this.defaultPictureUrl,
-      mobilePictureUrl: this.mobilePictureUrl,
-      externalUrl: this.externalUrl,
-      countryName: this.countryName,
-      countryPortugueseName: this.countryPortugueseName,
+      nome: this.nome.toString(),
+      imagemPadrao: this.imagemPadrao,
+      imagemDispositivos: this.imagemDispositivos,
+      urlReferencia: this.urlReferencia,
+      nomePais: this.nomePais,
+      nomePaisPortugues: this.nomePaisPortugues,
       isoAlpha3: this.isoAlpha3,
-      countryId: this.countryId,
-      flag: this.flag,
-      totalBooks: this.totalBooks,
-      reviewPending: this.reviewPending,
+      idPais: this.idPais,
+      bandeira: this.bandeira,
+      totalLivros: this.totalLivros,
+      revisar: this.revisar,
     });
   }
 }

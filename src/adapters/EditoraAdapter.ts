@@ -10,13 +10,13 @@ export class EditoraAdapter {
    * Converte uma Entity Editora para DTO
    */
   static toDTO(editora: Editora): EditoraDTO {
-    return {
+    return new EditoraDTO({
       id: editora.getId(),
       nome: editora.getNome().toString(),
       email: editora.getEmail()?.toString(),
       website: editora.getWebsite(),
       pais: editora.getPais(),
-    };
+    });
   }
 
   /**

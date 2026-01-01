@@ -15,7 +15,7 @@ export class EditoraDTO {
     this.logoUrl = Object.getOwnPropertyDescriptor(data, 'logoUrl')?.value ?? undefined;
   }
 
-  toString(): string {
+  toJSONString(): string {
     return JSON.stringify({
       id: this.id,
       nome: this.nome,

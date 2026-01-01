@@ -65,12 +65,12 @@ describe('EditoraAdapter', () => {
 
   describe('fromCreateDTO', () => {
     it('deve converter CriarEditoraDTO para EditoraProps com todos os campos', () => {
-      const dto: EditoraDTO = {
+      const dto = new EditoraDTO({
         nome: 'Nova Editora',
         email: 'contato@novaeditora.com',
         website: 'https://novaeditora.com',
         pais: 'Brasil',
-      };
+      });
 
       const props = EditoraAdapter.fromCreateDTO(dto);
 
@@ -83,12 +83,11 @@ describe('EditoraAdapter', () => {
     });
 
     it('deve converter CriarEditoraDTO para EditoraProps com email undefined', () => {
-      const dto: EditoraDTO = {
+      const dto = new EditoraDTO({
         nome: 'Editora Sem Email',
         website: 'https://semmail.com',
         pais: 'Portugal',
-      };
-
+      });
       const props = EditoraAdapter.fromCreateDTO(dto);
 
       expect(props.nome).toBeInstanceOf(Nome);
@@ -99,9 +98,9 @@ describe('EditoraAdapter', () => {
     });
 
     it('deve converter CriarEditoraDTO para Editora apenas com campos obrigatórios', () => {
-      const dto: EditoraDTO = {
+      const dto = new EditoraDTO({
         nome: 'Editora Mínima',
-      };
+      });
 
       const props = EditoraAdapter.fromCreateDTO(dto);
 

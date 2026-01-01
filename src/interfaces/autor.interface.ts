@@ -1,14 +1,14 @@
 export interface AutorInterface {
   id?: string;
-  name: string;
-  defaultPictureUrl?: string;
-  mobilePictureUrl?: string;
-  externalUrl?: string;
-  countryName?: string;
-  countryPortugueseName?: string;
+  nome: string;
+  imagemPadrao?: string;
+  imagemDispositivos?: string;
+  urlReferencia?: string;
+  nomePais?: string;
+  nomePaisPortugues?: string;
   isoAlpha3?: string;
-  countryId?: number;
-  flag?: string;
-  totalBooks?: number;
-  reviewPending: boolean;
+  idPais?: number;
+  bandeira?: string;
+  totalLivros?: number;
+  revisar?: boolean;
 }

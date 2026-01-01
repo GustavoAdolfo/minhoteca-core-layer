@@ -10,33 +10,33 @@ export class AutorAdapter {
   static toDTO(autor: Autor): AutorDTO {
     return new AutorDTO({
       id: autor.getId(),
-      name: autor.getName(),
-      defaultPictureUrl: autor.getDefaultPictureUrl(),
-      mobilePictureUrl: autor.getMobilePictureUrl(),
-      externalUrl: autor.getExternalUrl(),
-      countryName: autor.getCountryName(),
-      countryPortugueseName: autor.getCountryPortugueseName(),
+      nome: autor.getNome(),
+      imagemPadrao: autor.getImagemPadrao(),
+      imagemDispositivos: autor.getImagemDispositivos(),
+      urlReferencia: autor.getUrlReferencia(),
+      nomePais: autor.getNomePais(),
+      nomePaisPortugues: autor.getNomePaisPortugues(),
       isoAlpha3: autor.getIsoAlpha3(),
-      countryId: autor.getCountryId(),
-      flag: autor.getFlag(),
-      totalBooks: autor.getTotalBooks() ?? 0,
-      reviewPending: autor.getReviewPending(),
+      idPais: autor.getIdPais(),
+      bandeira: autor.getBandeira(),
+      totalLivros: autor.getTotalLivros() ?? 0,
+      revisar: autor.getRevisar(),
     });
   }
 
   static fromCreateDTO(dto: AutorDTO): Autor {
     const data: AutorInterface = {
-      name: dto.name ?? '',
-      defaultPictureUrl: dto.defaultPictureUrl,
-      mobilePictureUrl: dto.mobilePictureUrl,
-      externalUrl: dto.externalUrl,
-      countryName: dto.countryName,
-      countryPortugueseName: dto.countryPortugueseName,
+      nome: dto.nome ?? '',
+      imagemPadrao: dto.imagemPadrao,
+      imagemDispositivos: dto.imagemDispositivos,
+      urlReferencia: dto.urlReferencia,
+      nomePais: dto.nomePais,
+      nomePaisPortugues: dto.nomePaisPortugues,
       isoAlpha3: dto.isoAlpha3,
-      countryId: dto.countryId,
-      flag: dto.flag,
-      totalBooks: dto.totalBooks,
-      reviewPending: dto.reviewPending,
+      idPais: dto.idPais,
+      bandeira: dto.bandeira,
+      totalLivros: dto.totalLivros,
+      revisar: dto.revisar,
     };
 
     return Autor.create(data, dto.id);

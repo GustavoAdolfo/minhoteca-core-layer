@@ -1,12 +1,13 @@
 import { LivroAdapter } from '../../adapters/LivroAdapter';
-import { Livro, StatusLivro } from '../../entities/Livro';
-import { Nome } from '../../value-objects/Nome';
+import { Livro } from '../../entities/Livro';
+import { StatusLivro } from '../../enums';
 import { ISBN } from '../../value-objects/ISBN';
-import { CriarLivroDTO } from '../../dtos/LivroDTO';
+import { LivroDTO } from '../../dtos/LivroDTO';
+import { LivroInterface } from '../../interfaces/livro.interface';
 
 describe('LivroAdapter', () => {
   const mockLivroProps = {
-    titulo: new Nome('O Senhor dos Anéis'),
+    titulo: 'O Senhor dos Anéis',
     isbn: new ISBN('978-0-545-01022-1'),
     autorId: 'autor-123',
     editoraId: 'editora-456',
@@ -16,7 +17,8 @@ describe('LivroAdapter', () => {
     localizacao: 'Estante A-10',
     criadoEm: new Date('2024-01-01T10:00:00Z'),
     atualizadoEm: new Date('2024-01-02T15:30:00Z'),
-  };
+    id: 'livro-789',
+  } as unknown as LivroInterface;
 
   describe('toDTO', () => {
     it('deve converter Livro entity para LivroDTO', () => {
@@ -29,7 +31,7 @@ describe('LivroAdapter', () => {
         autorId: 'autor-123',
         editoraId: 'editora-456',
         anoPublicacao: 1954,
-        descricao: 'Uma épica jornada pela Terra Média',
+        sinopse: 'Uma épica jornada pela Terra Média',
         status: StatusLivro.DISPONIVEL,
         localizacao: 'Estante A-10',
         isbn: '9780545010221',
@@ -39,15 +41,15 @@ describe('LivroAdapter', () => {
 
   describe('fromCreateDTO', () => {
     it('deve converter CriarLivroDTO para props de Livro', () => {
-      const createDTO: CriarLivroDTO = {
+      const createDTO = new LivroDTO({
         titulo: 'Harry Potter',
         isbn: '978-0-439-13959-5',
         autorId: 'autor-999',
         editoraId: 'editora-888',
         anoPublicacao: 1997,
-        descricao: 'O menino que sobreviveu',
+        sinopse: 'O menino que sobreviveu',
         localizacao: 'Estante B-05',
-      };
+      });
 
       const props = LivroAdapter.fromCreateDTO(createDTO);
 
@@ -62,16 +64,16 @@ describe('LivroAdapter', () => {
     });
 
     it('deve usar status fornecido no DTO', () => {
-      const createDTO: CriarLivroDTO = {
+      const createDTO = new LivroDTO({
         titulo: 'Livro Emprestado',
         isbn: '978-1-234-56789-0',
         autorId: 'autor-111',
         editoraId: 'editora-222',
         anoPublicacao: 2020,
-        descricao: 'Descrição',
+        sinopse: 'Descrição',
         status: StatusLivro.EMPRESTADO,
         localizacao: 'Estante C-01',
-      };
+      });
 
       const props = LivroAdapter.fromCreateDTO(createDTO);
 
@@ -83,7 +85,7 @@ describe('LivroAdapter', () => {
     it('deve converter lista de Livros para lista de DTOs', () => {
       const livros = [
         Livro.create(mockLivroProps, 'livro-1'),
-        Livro.create({ ...mockLivroProps, titulo: new Nome('Outro Livro') }, 'livro-2'),
+        Livro.create({ ...mockLivroProps, titulo: 'Outro Livro' }, 'livro-2'),
       ];
 
       const dtoList = LivroAdapter.toDTOList(livros);
