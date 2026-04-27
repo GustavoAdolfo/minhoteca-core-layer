@@ -1,16 +1,17 @@
+import { LivroDTO } from './LivroDTO';
+import { PaisDTO } from './PaisDTO';
+
 export class AutorDTO {
   id?: string;
   nome?: string;
   imagemPadrao?: string;
   imagemDispositivos?: string;
   urlReferencia?: string;
-  nomePais?: string;
-  nomePaisPortugues?: string;
-  isoAlpha3?: string;
   idPais?: number;
-  bandeira?: string;
+  pais?: PaisDTO;
   totalLivros: number = 0;
   revisar: boolean = false;
+  livros?: LivroDTO[];
 
   constructor(data: object) {
     this.id = Object.getOwnPropertyDescriptor(data, 'id')?.value as string | undefined;
@@ -24,15 +25,8 @@ export class AutorDTO {
     this.urlReferencia = Object.getOwnPropertyDescriptor(data, 'urlReferencia')?.value as
       | string
       | undefined;
-    this.nomePais = Object.getOwnPropertyDescriptor(data, 'nomePais')?.value as string | undefined;
-    this.nomePaisPortugues = Object.getOwnPropertyDescriptor(data, 'nomePaisPortugues')?.value as
-      | string
-      | undefined;
-    this.isoAlpha3 = Object.getOwnPropertyDescriptor(data, 'isoAlpha3')?.value as
-      | string
-      | undefined;
+    this.pais = Object.getOwnPropertyDescriptor(data, 'pais')?.value as PaisDTO | undefined;
     this.idPais = Object.getOwnPropertyDescriptor(data, 'idPais')?.value as number | undefined;
-    this.bandeira = Object.getOwnPropertyDescriptor(data, 'bandeira')?.value as string | undefined;
     this.totalLivros =
       (Object.getOwnPropertyDescriptor(data, 'totalLivros')?.value as number | undefined) ?? 0;
     this.revisar =
@@ -46,11 +40,8 @@ export class AutorDTO {
       imagemPadrao: this.imagemPadrao,
       imagemDispositivos: this.imagemDispositivos,
       urlReferencia: this.urlReferencia,
-      nomePais: this.nomePais,
-      nomePaisPortugues: this.nomePaisPortugues,
-      isoAlpha3: this.isoAlpha3,
+      pais: this.pais,
       idPais: this.idPais,
-      bandeira: this.bandeira,
       totalLivros: this.totalLivros,
       revisar: this.revisar,
     });
