@@ -1,6 +1,6 @@
 export class EditoraDTO {
   id?: string;
-  nome?: string;
+  nome: string;
   email?: string;
   website?: string;
   pais?: string;
@@ -8,7 +8,7 @@ export class EditoraDTO {
 
   constructor(data: object) {
     this.id = Object.getOwnPropertyDescriptor(data, 'id')?.value ?? undefined;
-    this.nome = Object.getOwnPropertyDescriptor(data, 'nome')?.value ?? undefined;
+    this.nome = String(Object.getOwnPropertyDescriptor(data, 'nome')?.value);
     this.email = Object.getOwnPropertyDescriptor(data, 'email')?.value ?? undefined;
     this.website = Object.getOwnPropertyDescriptor(data, 'website')?.value ?? undefined;
     this.pais = Object.getOwnPropertyDescriptor(data, 'pais')?.value ?? undefined;
