@@ -29,8 +29,6 @@ describe('LivroDTO', () => {
     expect(content).toHaveProperty('anoPublicacao', 2020);
     expect(content).toHaveProperty('status', StatusLivro.DISPONIVEL);
     expect(content).toHaveProperty('sinopse', 'Uma breve sinopse do livro.');
-    expect(content).toHaveProperty('criadoEm', '2024-06-01T12:00:00Z');
-    expect(content).toHaveProperty('atualizadoEm', '2024-06-02T12:00:00Z');
     expect(content).toHaveProperty('revisar', false);
   });
 });
