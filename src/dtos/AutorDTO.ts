@@ -3,13 +3,13 @@ import { PaisDTO } from './PaisDTO';
 
 export class AutorDTO {
   id?: string;
-  nome?: string;
+  nome: string | undefined;
   imagemPadrao?: string;
   imagemDispositivos?: string;
   urlReferencia?: string;
   idPais?: number;
   pais?: PaisDTO;
-  totalLivros: number = 0;
+  totalLivros: number | undefined;
   revisar: boolean = false;
   livros?: LivroDTO[];
 

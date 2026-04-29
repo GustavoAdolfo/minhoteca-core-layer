@@ -18,8 +18,7 @@ export class Editora extends Entity {
   private constructor(id: string, props: EditoraInterface) {
     super(id);
     this.nome = new Nome(props.nome);
-    this.email =
-      props.email === undefined || !props.email?.trim() ? undefined : new Email(props.email);
+    this.email = props?.email ? new Email(props.email) : undefined;
     this.website = props.website;
     this.pais = props.pais;
     this.logoUrl = props.logoUrl;
@@ -29,7 +28,7 @@ export class Editora extends Entity {
    * Factory method para criar uma nova Editora
    */
   static create(props: EditoraInterface, id?: string): Editora {
-    const editoraId = id || generateUUID();
+    const editoraId = id || generateUUID().replaceAll('-', '');
     return new Editora(editoraId, props);
   }
 
@@ -40,12 +39,12 @@ export class Editora extends Entity {
     return new Editora(id, props);
   }
 
-  getNome(): Nome {
-    return this.nome;
+  getNome(): string {
+    return this.nome.toPrimitive();
   }
 
-  getEmail(): Email | undefined {
-    return this.email;
+  getEmail(): string | undefined {
+    return this.email?.toPrimitive() ?? undefined;
   }
 
   getWebsite(): string | undefined {
@@ -60,12 +59,16 @@ export class Editora extends Entity {
     return this.logoUrl;
   }
 
+  removeEmail(): void {
+    this.email = undefined;
+  }
+
   update(props: Partial<EditoraInterface>): void {
     this.nome = props.nome ? new Nome(props.nome) : this.nome;
     this.email = props.email ? new Email(props.email) : this.email;
-    this.website = props.website ?? this.website;
-    this.pais = props.pais ?? this.pais;
-    this.logoUrl = props.logoUrl ?? this.logoUrl;
+    this.website = props.website ? props.website : this.website;
+    this.pais = props.pais ? props.pais : this.pais;
+    this.logoUrl = props.logoUrl ? props.logoUrl : this.logoUrl;
   }
 
   toJSONString(): string {
@@ -81,9 +84,6 @@ export class Editora extends Entity {
 
   equals(entity: Entity): boolean {
     if (!(entity instanceof Editora)) {
-      return false;
-    }
-    if (!super.equals(entity)) {
       return false;
     }
     return (

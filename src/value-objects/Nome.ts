@@ -9,14 +9,24 @@ export class Nome extends ValueObject {
   private static readonly MIN_LENGTH = 2;
   private static readonly MAX_LENGTH = 255;
 
-  constructor(value: string) {
+  constructor(value: object | string | undefined) {
     super();
+    if (value === undefined) {
+      throw new Error('Nome é obrigatório');
+    }
     this.validate(value);
-    this.value = value?.trim();
+    this.value =
+      value && typeof value === 'object'
+        ? String(Object.getOwnPropertyDescriptor(value, 'value')?.value?.trim() ?? '')
+        : (value as string)?.trim();
   }
 
-  private validate(value: string): void {
-    if (!value) {
+  private validate(value: object | string): void {
+    if (value && typeof value === 'object') {
+      value = String(Object.getOwnPropertyDescriptor(value, 'value')?.value ?? '');
+    }
+
+    if (!value || value.trim().length === 0) {
       throw new Error('Nome é obrigatório');
     }
 

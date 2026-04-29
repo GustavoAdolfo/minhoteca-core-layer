@@ -19,8 +19,8 @@ describe('EditoraAdapter', () => {
       const dto = EditoraAdapter.toDTO(editora);
 
       expect(dto).toHaveProperty('id', 'editora-123');
-      expect(dto.nome).toBe(editoraProps.nome.toString());
-      expect(dto.email).toBe(editoraProps.email?.toString());
+      expect(dto.nome).toBe(editoraProps.nome);
+      expect(dto.email).toBe(editoraProps.email);
       expect(dto.website).toBe(editoraProps.website);
       expect(dto.pais).toBe(editoraProps.pais);
     });

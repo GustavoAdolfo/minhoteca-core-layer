@@ -13,29 +13,41 @@ import { LivroInterface } from '../interfaces/livro.interface';
 export class Livro extends Entity {
   atualizadoEm: Date;
   criadoEm: Date;
-  titulo: string;
+  titulo?: string;
+  subtitulo?: string;
   isbn: ISBN;
   autorId: string;
-  editoraId: string;
-  anoPublicacao: number;
+  editoraId?: string;
+  anoPublicacao?: number;
+  paginas: number;
   sinopse: string | undefined;
   status: StatusLivro;
   localizacao: string | undefined;
   revisar: boolean | undefined;
+  idioma: string | undefined;
+  imagemCapaUrl: string | undefined;
+  imagemCapaMiniUrl: string | undefined;
 
   private constructor(id: string, props: LivroInterface) {
     super(id);
     this.atualizadoEm = props.atualizadoEm ?? new Date();
     this.criadoEm = props.criadoEm ?? new Date();
-    this.titulo = props.titulo;
+    if (this.validarTitulo(props.titulo)) {
+      this.titulo = props.titulo;
+    }
+    this.subtitulo = props.subtitulo;
     this.isbn = props.isbn;
     this.autorId = props.autorId;
     this.editoraId = props.editoraId;
     this.anoPublicacao = props.anoPublicacao;
+    this.paginas = props.paginas ?? 0;
     this.sinopse = props.sinopse;
     this.status = props.status ?? StatusLivro.REVISAO;
     this.localizacao = props.localizacao;
     this.revisar = props.revisar ?? true;
+    this.idioma = props.idioma;
+    this.imagemCapaUrl = props.imagemCapaUrl;
+    this.imagemCapaMiniUrl = props.imagemCapaMiniUrl;
   }
 
   /**
@@ -44,11 +56,17 @@ export class Livro extends Entity {
   static create(props: Omit<LivroInterface, 'criadoEm' | 'atualizadoEm'>, id?: string): Livro {
     this.validarPropriedades(props);
 
-    const livroId = id ?? this.generateId();
+    const livroId = id ?? this.generateId().replaceAll('-', '');
     const agora = new Date();
+    const isbn = Object.getOwnPropertyDescriptor(props, 'isbn')
+      ? typeof props.isbn === 'string'
+        ? new ISBN(props.isbn)
+        : new ISBN(Object.getOwnPropertyDescriptor(props.isbn, 'value')?.value ?? '')
+      : new ISBN('');
 
     const propsCompletas: LivroInterface = {
       ...props,
+      isbn,
       criadoEm: Object.getOwnPropertyDescriptor(props, 'criadoEm')?.value ?? agora,
       atualizadoEm: Object.getOwnPropertyDescriptor(props, 'atualizadoEm')?.value ?? agora,
     };
@@ -69,20 +87,34 @@ export class Livro extends Entity {
   private static validarPropriedades(
     props: Omit<LivroInterface, 'criadoEm' | 'atualizadoEm'>
   ): void {
-    if (props.anoPublicacao < 1000 || props.anoPublicacao > new Date().getFullYear()) {
+    if (
+      props.anoPublicacao &&
+      (props.anoPublicacao < 1000 || props.anoPublicacao > new Date().getFullYear())
+    ) {
       throw new LivroInvalidoError(`Ano de publicação inválido: ${props.anoPublicacao}`);
     }
+  }
+
+  private validarTitulo(titulo: string | undefined): boolean {
+    if (!titulo || String(titulo)?.trim().length === 0) {
+      throw new LivroInvalidoError('Título é obrigatório e não pode ser vazio ou nulo');
+    }
+    return true;
   }
 
   /**
    * Gera um ID único para novo Livro (UUID v4)
    */
   private static generateId(): string {
-    return generateUUID();
+    return generateUUID().replaceAll('-', '');
   }
 
-  getTitulo(): string {
-    return this.titulo;
+  getTitulo(): string | undefined {
+    return this.titulo?.toString();
+  }
+
+  getSubtitulo(): string | undefined {
+    return this.subtitulo;
   }
 
   getISBN(): string {
@@ -93,12 +125,16 @@ export class Livro extends Entity {
     return this.autorId;
   }
 
-  getEditoraId(): string {
+  getEditoraId(): string | undefined {
     return this.editoraId;
   }
 
-  getAnoPublicacao(): number {
+  getAnoPublicacao(): number | undefined {
     return this.anoPublicacao;
+  }
+
+  getPaginas(): number {
+    return this.paginas;
   }
 
   getSinopse(): string | undefined {
@@ -122,6 +158,18 @@ export class Livro extends Entity {
 
   getRevisar(): boolean | undefined {
     return this.revisar;
+  }
+
+  getIdioma(): string | undefined {
+    return this.idioma;
+  }
+
+  getImagemCapaUrl(): string | undefined {
+    return this.imagemCapaUrl;
+  }
+
+  getImagemCapaMiniUrl(): string | undefined {
+    return this.imagemCapaMiniUrl;
   }
 
   /**
@@ -197,7 +245,8 @@ export class Livro extends Entity {
     return JSON.stringify({
       id: this.getId(),
       titulo: this.getTitulo(),
-      isbn: this.getISBN(),
+      subtitulo: this.getSubtitulo(),
+      isbn: this.getISBN().toString(),
       autorId: this.getAutorId(),
       editoraId: this.getEditoraId(),
       anoPublicacao: this.getAnoPublicacao(),
@@ -206,6 +255,29 @@ export class Livro extends Entity {
       criadoEm: this.getCriadoEm(),
       atualizadoEm: this.getAtualizadoEm(),
       sinopse: this.getSinopse(),
+      paginas: this.getPaginas(),
     });
+  }
+
+  equals(entity: Entity): boolean {
+    if (!(entity instanceof Livro)) {
+      return false;
+    }
+    return (
+      this.titulo === entity.titulo &&
+      this.subtitulo === entity.subtitulo &&
+      this.isbn.equals(entity.isbn) &&
+      this.autorId === entity.autorId &&
+      this.editoraId === entity.editoraId &&
+      this.anoPublicacao === entity.anoPublicacao &&
+      this.paginas === entity.paginas &&
+      this.sinopse === entity.sinopse &&
+      this.status === entity.status &&
+      this.localizacao === entity.localizacao &&
+      this.revisar === entity.revisar &&
+      this.idioma === entity.idioma &&
+      this.imagemCapaUrl === entity.imagemCapaUrl &&
+      this.imagemCapaMiniUrl === entity.imagemCapaMiniUrl
+    );
   }
 }

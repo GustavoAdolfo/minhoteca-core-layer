@@ -14,11 +14,10 @@ export class Autor extends Entity {
   protected imagemDispositivos?: string;
   protected urlReferencia?: string;
   protected nomePais?: string;
-  protected nomePaisPortugues?: string;
   protected isoAlpha3?: string;
   protected idPais?: number;
   protected bandeira?: string;
-  protected totalLivros: number = 0;
+  protected totalLivros: number | undefined;
   protected revisar: boolean = false;
 
   private constructor(id: string, props: AutorInterface) {
@@ -27,12 +26,18 @@ export class Autor extends Entity {
     this.imagemPadrao = props.imagemPadrao;
     this.imagemDispositivos = props.imagemDispositivos;
     this.urlReferencia = props.urlReferencia;
-    this.nomePais = props.nomePais;
-    this.nomePaisPortugues = props.nomePaisPortugues;
-    this.isoAlpha3 = props.isoAlpha3;
-    this.idPais = props.idPais;
-    this.bandeira = props.bandeira;
-    this.totalLivros = props.totalLivros ?? 0;
+    this.idPais = props.idPais ?? Object.getOwnPropertyDescriptor(props, 'pais')?.value?.isoNumeric;
+    this.nomePais =
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.nomePortugues ??
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.nome ??
+      Object.getOwnPropertyDescriptor(props, 'nomePais')?.value;
+    this.isoAlpha3 =
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.isoAlpha3 ??
+      Object.getOwnPropertyDescriptor(props, 'isoAlpha3')?.value;
+    this.bandeira =
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.bandeira ??
+      Object.getOwnPropertyDescriptor(props, 'bandeira')?.value;
+    this.totalLivros = props.totalLivros;
     this.revisar = props.revisar ?? false;
   }
 
@@ -40,7 +45,7 @@ export class Autor extends Entity {
    * Factory method para criar um novo Autor
    */
   static create(props: AutorInterface, id?: string): Autor {
-    const autorId = id || generateUUID();
+    const autorId = id || generateUUID().replaceAll('-', '');
     return new Autor(autorId, props);
   }
 
@@ -52,6 +57,10 @@ export class Autor extends Entity {
       throw new AutorInvalidoError('ID do autor não informado ou inválido');
     }
     return new Autor(id, props);
+  }
+
+  getId(): string {
+    return this.id;
   }
 
   getNome(): string {
@@ -72,10 +81,6 @@ export class Autor extends Entity {
 
   getUrlReferencia(): string | undefined {
     return this.urlReferencia;
-  }
-
-  getNomePaisPortugues(): string | undefined {
-    return this.nomePaisPortugues;
   }
 
   getIsoAlpha3(): string | undefined {
@@ -105,7 +110,18 @@ export class Autor extends Entity {
     this.nome = props.nome ? new Nome(props.nome) : this.nome;
     this.imagemPadrao = props.imagemPadrao ?? this.imagemPadrao;
     this.imagemDispositivos = props.imagemDispositivos ?? this.imagemDispositivos;
-    this.nomePais = props.nomePais ?? this.nomePais;
+    this.nomePais =
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.nomePortugues ??
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.nome ??
+      this.nomePais;
+    this.isoAlpha3 =
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.isoAlpha3 ?? this.isoAlpha3;
+    this.idPais = Object.getOwnPropertyDescriptor(props, 'pais')?.value?.isoNumeric ?? this.idPais;
+    this.bandeira =
+      Object.getOwnPropertyDescriptor(props, 'pais')?.value?.bandeira ?? this.bandeira;
+    this.urlReferencia = props.urlReferencia ?? this.urlReferencia;
+    this.totalLivros = props.totalLivros ?? this.totalLivros;
+    this.revisar = props.revisar ?? this.revisar;
   }
 
   toJSONString(): string {
@@ -116,12 +132,29 @@ export class Autor extends Entity {
       imagemDispositivos: this.imagemDispositivos,
       urlReferencia: this.urlReferencia,
       nomePais: this.nomePais,
-      nomePaisPortugues: this.nomePaisPortugues,
       isoAlpha3: this.isoAlpha3,
       idPais: this.idPais,
       bandeira: this.bandeira,
       totalLivros: this.totalLivros,
       revisar: this.revisar,
     });
+  }
+
+  equals(entity: Entity): boolean {
+    if (!(entity instanceof Autor)) {
+      return false;
+    }
+    return (
+      this.nome.equals(entity.nome) &&
+      this.totalLivros === entity.totalLivros &&
+      this.revisar === entity.revisar &&
+      this.imagemPadrao === entity.imagemPadrao &&
+      this.imagemDispositivos === entity.imagemDispositivos &&
+      this.urlReferencia === entity.urlReferencia &&
+      this.nomePais === entity.nomePais &&
+      this.isoAlpha3 === entity.isoAlpha3 &&
+      this.idPais === entity.idPais &&
+      this.bandeira === entity.bandeira
+    );
   }
 }

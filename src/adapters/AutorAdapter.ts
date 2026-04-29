@@ -14,11 +14,13 @@ export class AutorAdapter {
       imagemPadrao: autor.getImagemPadrao(),
       imagemDispositivos: autor.getImagemDispositivos(),
       urlReferencia: autor.getUrlReferencia(),
-      nomePais: autor.getNomePais(),
-      nomePaisPortugues: autor.getNomePaisPortugues(),
-      isoAlpha3: autor.getIsoAlpha3(),
+      pais: {
+        nome: autor.getNomePais(),
+        isoAlpha3: autor.getIsoAlpha3(),
+        bandeira: autor.getBandeira(),
+        isoNumeric: autor.getIdPais(),
+      },
       idPais: autor.getIdPais(),
-      bandeira: autor.getBandeira(),
       totalLivros: autor.getTotalLivros() ?? 0,
       revisar: autor.getRevisar(),
     });
@@ -26,15 +28,18 @@ export class AutorAdapter {
 
   static fromCreateDTO(dto: AutorDTO): Autor {
     const data: AutorInterface = {
-      nome: dto.nome ?? '',
+      nome: dto.nome,
       imagemPadrao: dto.imagemPadrao,
       imagemDispositivos: dto.imagemDispositivos,
       urlReferencia: dto.urlReferencia,
-      nomePais: dto.nomePais,
-      nomePaisPortugues: dto.nomePaisPortugues,
-      isoAlpha3: dto.isoAlpha3,
+      pais: {
+        nome: dto?.pais?.nome,
+        nomePortugues: dto?.pais?.nomePortugues,
+        isoAlpha3: dto?.pais?.isoAlpha3,
+        bandeira: dto?.pais?.bandeira,
+        isoNumeric: dto?.pais?.isoNumeric,
+      },
       idPais: dto.idPais,
-      bandeira: dto.bandeira,
       totalLivros: dto.totalLivros,
       revisar: dto.revisar,
     };

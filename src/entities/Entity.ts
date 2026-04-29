@@ -14,11 +14,9 @@ export abstract class Entity {
   }
 
   /**
-   * Compara se duas entidades são iguais pelo ID
+   * Compara se duas entidades são iguais
    */
-  equals(entity: Entity): boolean {
-    return this.id === entity.getId();
-  }
+  abstract equals(entity: Entity): boolean;
 
   /**
    * Retorna uma representação legível da entidade

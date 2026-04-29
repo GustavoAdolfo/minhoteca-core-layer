@@ -53,7 +53,7 @@ describe('LivroAdapter', () => {
 
       const props = LivroAdapter.fromCreateDTO(createDTO);
 
-      expect(props.titulo.toString()).toBe('Harry Potter');
+      expect(props.titulo?.toString()).toBe('Harry Potter');
       expect(props.isbn.toString()).toBe('9780439139595');
       expect(props.autorId).toBe('autor-999');
       expect(props.editoraId).toBe('editora-888');
