@@ -6,6 +6,15 @@ describe('Nome Value Object', () => {
     expect(nome.toPrimitive()).toBe('João da Silva');
   });
 
+  it('deve criar um nome válido por objeto', () => {
+    const nome = new Nome({ value: 'João da Silva' });
+    expect(nome.toPrimitive()).toBe('João da Silva');
+  });
+
+  it('deve retornar erro ao criar um nome por objeto sem value', () => {
+    expect(() => new Nome({ info: 'João da Silva' })).toThrow('Nome é obrigatório');
+  });
+
   it('deve remover espaços em branco desnecessários', () => {
     const nome = new Nome('  João Silva  ');
     expect(nome.toPrimitive()).toBe('João Silva');
@@ -50,5 +59,20 @@ describe('Nome Value Object', () => {
   it('deve retornar representação em string', () => {
     const nome = new Nome('João Silva');
     expect(nome.toString()).toBe('João Silva');
+  });
+
+  it('deve retornar JSON com a propriedade value', () => {
+    const nome = new Nome('João Silva');
+    expect(nome.toJSON()).toEqual(JSON.stringify({ value: 'João Silva' }));
+  });
+
+  it('deve retornar desigualdade para objetos diferentes', () => {
+    const nome1 = new Nome('João Silva');
+    const nome2 = 'Maria Silva';
+    expect(nome1.equals(nome2 as unknown as Nome)).toBe(false);
+  });
+
+  it('deve lançar erro para nome nulo', () => {
+    expect(() => new Nome(undefined)).toThrow('Nome é obrigatório');
   });
 });

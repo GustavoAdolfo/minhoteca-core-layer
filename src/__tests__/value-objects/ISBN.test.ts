@@ -11,6 +11,15 @@ describe('ISBN Value Object', () => {
     expect(isbn.toPrimitive()).toBe('012345678X');
   });
 
+  it('deve retornar erro ao criar um ISBN nulo', () => {
+    expect(() => new ISBN(undefined)).toThrow('ISBN é obrigatório');
+  });
+
+  it('deve retornar desigualdade para objetos diferentes', () => {
+    const isbn = new ISBN('978-0-123-45678-9');
+    expect(isbn.equals('978-0-123-45678-9' as unknown as ISBN)).toBe(false);
+  });
+
   it('deve remover hífens e espaços', () => {
     const isbn = new ISBN('978 0 123 45678 9');
     expect(isbn.toPrimitive()).toBe('9780123456789');

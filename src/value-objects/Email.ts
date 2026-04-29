@@ -38,6 +38,6 @@ export class Email extends ValueObject {
   }
 
   toJSON(): string {
-    return this.toPrimitive();
+    return JSON.stringify({ value: this.toPrimitive() });
   }
 }

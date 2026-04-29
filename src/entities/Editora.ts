@@ -3,6 +3,7 @@ import { Nome } from '../value-objects/Nome';
 import { Email } from '../value-objects/Email';
 import { generateUUID } from '../utils/uuid';
 import { EditoraInterface } from '../interfaces/editora.interface';
+import { EditoraInvalidaError } from '../errors/DomainErrors';
 
 /**
  * Entidade Editora
@@ -22,6 +23,17 @@ export class Editora extends Entity {
     this.website = props.website;
     this.pais = props.pais;
     this.logoUrl = props.logoUrl;
+  }
+
+  private static validarPropriedades(
+    props: Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>
+  ): void {
+    if (!props.nome) {
+      throw new EditoraInvalidaError(`Nome da editora inválido: ${props.nome}`);
+    }
+    if (!props.email) {
+      throw new EditoraInvalidaError(`Email da editora inválido: ${props.email}`);
+    }
   }
 
   /**

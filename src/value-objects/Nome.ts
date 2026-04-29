@@ -17,20 +17,20 @@ export class Nome extends ValueObject {
     this.validate(value);
     this.value =
       value && typeof value === 'object'
-        ? String(Object.getOwnPropertyDescriptor(value, 'value')?.value?.trim() ?? '')
+        ? Object.getOwnPropertyDescriptor(value, 'value')?.value?.trim()
         : (value as string)?.trim();
   }
 
   private validate(value: object | string): void {
     if (value && typeof value === 'object') {
-      value = String(Object.getOwnPropertyDescriptor(value, 'value')?.value ?? '');
+      value = Object.getOwnPropertyDescriptor(value, 'value')?.value?.toString() ?? '';
     }
 
-    if (!value || value.trim().length === 0) {
+    if (!value || (value as string).trim().length === 0) {
       throw new Error('Nome é obrigatório');
     }
 
-    const trimmed = value?.trim();
+    const trimmed = (value as string).trim();
 
     if (trimmed.length < Nome.MIN_LENGTH) {
       throw new Error(`Nome deve ter no mínimo ${Nome.MIN_LENGTH} caracteres`);
@@ -57,6 +57,6 @@ export class Nome extends ValueObject {
   }
 
   toJSON(): string {
-    return this.toPrimitive();
+    return JSON.stringify({ value: this.toPrimitive() });
   }
 }
