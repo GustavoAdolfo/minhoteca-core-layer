@@ -1,7 +1,7 @@
 ![GitHub](https://img.shields.io/github/license/GustavoAdolfo/minhoteca-core-layer)
 ![npm](https://img.shields.io/npm/v/@GustavoAdolfo/minhoteca-core-layer)
 ![CI](https://github.com/GustavoAdolfo/minhoteca-core-layer/actions/workflows/ci.yml/badge.svg)
-![Tests](https://img.shields.io/badge/tests-61%20passed-success)
+![Tests](https://img.shields.io/badge/tests-+100%20passed-success)
 
 # minhoteca-core-layer
 
@@ -14,6 +14,7 @@ Este projeto oferece classes, objetos de valor e DTOs reutilizáveis para aceler
 Minhoteca tem como missão facilitar o acesso gratuito à leitura, gestão de empréstimos e organização de pequenas bibliotecas em comunidades, ONGs e projetos sociais, contribuindo para os Objetivos de Desenvolvimento Sustentável (ODS) da ONU — especialmente os que tratam de educação de qualidade e redução das desigualdades.
 
 **Alinhamento aos ODS:**
+
 - 🎓 ODS 4: Educação de Qualidade
 - 📚 ODS 10: Redução das Desigualdades
 - 💚 ODS 17: Parcerias para a Implementação dos Objetivos
@@ -24,8 +25,9 @@ Minhoteca tem como missão facilitar o acesso gratuito à leitura, gestão de em
 - **Objetos de Valor:** ISBN, Nome, Email, Data (com validação automática e imutabilidade)
 - **DTOs:** Facilita a integração entre camadas sem expor lógica interna
 - **Adapters:** Conversão automática entre Entities e DTOs
+- **Serviços Core:** `LogService` robusto integrado com Winston, nativo para AWS CloudWatch e com sanitização automática de dados sensíveis.
 - **Tratamento de Erros:** Erros customizados de domínio para melhor tratamento
-- **Testes Completos:** 61 testes unitários com 70%+ de cobertura
+- **Testes Completos:** +100 testes unitários com alta cobertura de código
 - **CI/CD Automatizado:** Build, testes e deploy via GitHub Actions
 - **Pronto para AWS Lambda Layers:** Documentação completa de deployment
 
@@ -33,8 +35,17 @@ Minhoteca tem como missão facilitar o acesso gratuito à leitura, gestão de em
 
 ### Instalação
 
+Como este pacote é distribuído como um pacote privado/scopado no **GitHub Packages**, você precisa adicionar um arquivo `.npmrc` na raiz do seu projeto consumidor:
+
+```ini
+@gustavoadolfo:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${SEU_GITHUB_TOKEN}
+```
+
+Em seguida, execute:
+
 ```bash
-npm install @GustavoAdolfo/minhoteca-core-layer
+npm install @gustavoadolfo/minhoteca-core-layer
 ```
 
 ### Uso Básico
@@ -50,7 +61,7 @@ const livro = Livro.create({
   editoraId: 'editora-456',
   anoPublicacao: 1988,
   dataAquisicao: new Data('2024-01-15'),
-  status: StatusLivro.DISPONIVEL
+  status: StatusLivro.DISPONIVEL,
 });
 
 // Emprestar livro
@@ -59,12 +70,6 @@ livro.emprestar();
 // Devolver
 livro.devolver();
 ```
-
-## 📚 Documentação
-
-- **[Arquitetura e Conceitos](./docs/ARCHITECTURE.md)** - Domain-Driven Design, Entities, Value Objects
-- **[Exemplos Práticos](./docs/EXAMPLES.md)** - Código real para diferentes cenários
-- **[Deploy em Lambda Layer](./docs/LAMBDA_LAYER_DEPLOYMENT.md)** - Guia passo-a-passo para AWS
 
 ## 🏗️ Estrutura
 
@@ -109,12 +114,14 @@ Veja [Deploy em Lambda Layer](./docs/LAMBDA_LAYER_DEPLOYMENT.md) para instruçõ
 ## 🤝 Contribuir
 
 Queremos sua contribuição! Veja [CONTRIBUTING.md](./CONTRIBUTING.md) para:
+
 - Padrões de código
 - Como escrever testes
 - Processo de PR
 - Convenção de commits
 
 Contribuições em qualquer nível são bem-vindas:
+
 - 🐛 Reportar bugs
 - 📝 Melhorar documentação
 - ✨ Sugerir features
@@ -123,12 +130,14 @@ Contribuições em qualquer nível são bem-vindas:
 ## 📋 Roadmap
 
 **v0.2.0** (Próximo):
+
 - [ ] Entidade Empréstimo
 - [ ] Repository interfaces
 - [ ] DynamoDB examples
 - [ ] AWS SDK helpers
 
 **v0.3.0**:
+
 - [ ] Rate limiting utilities
 - [ ] Logging helpers
 - [ ] Webhook support
@@ -138,6 +147,7 @@ Contribuições em qualquer nível são bem-vindas:
 Distribuído sob licença **MIT** (veja [LICENSE](./LICENSE)).
 
 Escolhemos MIT para incentivar:
+
 - ✅ Uso comercial
 - ✅ Modificações
 - ✅ Distribuição
