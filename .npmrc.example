@@ -4,7 +4,7 @@
 # Copie este arquivo para .npmrc e configure conforme necessário
 
 # Configurar GitHub Packages como registry para pacotes scoped
-@GustavoAdolfo:registry=https://npm.pkg.github.com
+@gustavoadolfo:registry=https://npm.pkg.github.com
 
 # Usar token do GitHub (configure via variável de ambiente ou CLI)
 # Em CI/CD: usar secrets do GitHub

@@ -1,137 +1,228 @@
 import { Autor } from '../../entities/Autor';
-import { Nome } from '../../value-objects/Nome';
-import { Data } from '../../value-objects/Data';
+import { Entity } from '../../entities/Entity';
+import { AutorInterface } from '../../interfaces/autor.interface';
 
-const defaultNome = new Nome('Paulo Coelho');
+const defaultNome = 'Paulo Coelho';
 const defaultPais = 'Brasil';
-const defaultBiografia = 'Autor brasileiro reconhecido internacionalmente';
-const defaultNascimento = new Data('1947-08-24');
 
 describe('Autor Entity', () => {
   it('deve criar um novo autor', () => {
     const autorProps = {
       nome: defaultNome,
-      pais: defaultPais,
-    };
+      pais: {
+        nome: defaultPais,
+        nomePortugues: defaultPais,
+      },
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
 
     expect(autor.getId()).toBeDefined();
-    expect(autor.getNome().toString()).toBe(autorProps.nome.toString());
-    expect(autor.getPais()).toBe(autorProps.pais);
+    expect(autor.getNome().toString()).toBe(autorProps.nome?.toString());
+    expect(autor.getNomePais()).toBe(defaultPais);
   });
 
   it('deve criar um autor com todos os dados', () => {
     const autorProps = {
-      nome: defaultNome,
-      biografia: defaultBiografia,
-      dataNascimento: defaultNascimento,
-      pais: defaultPais,
-    };
+      id: '123456-abcdef',
+      nome: 'Autor Exemplo',
+      imagemPadrao: 'https://example.com/default.jpg',
+      imagemDispositivos: 'https://example.com/mobile.jpg',
+      urlReferencia: 'https://example.com/author?ref=id',
+      pais: {
+        nome: 'Terra Média',
+        nomePortugues: 'Terra Média',
+        isoAlpha3: 'TRM',
+        isoAlpha2: 'TM',
+        isoNumeric: 321,
+        bandeira: 'aaaaaaaaaaaaaaa',
+      },
+      idPais: 321,
+      totalLivros: 1,
+      revisar: false,
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
 
-    expect(autor.getNome().toString()).toBe(autorProps.nome.toString());
-    expect(autor.getBiografia()).toBe(autorProps.biografia);
-    expect(autor.getPais()).toBe(autorProps.pais);
+    expect(autor.getNome().toString()).toBe(autorProps.nome?.toString());
+    expect(autor.getImagemPadrao()).toBe(autorProps.imagemPadrao);
+    expect(autor.getImagemDispositivos()).toBe(autorProps.imagemDispositivos);
+    expect(autor.getUrlReferencia()).toBe(autorProps.urlReferencia);
+    const pais = Object.getOwnPropertyDescriptor(autorProps, 'pais')?.value;
+    expect(autor.getNomePais()).toBe(
+      Object.getOwnPropertyDescriptor(pais, 'nomePortugues')?.value ??
+        Object.getOwnPropertyDescriptor(pais, 'nome')?.value
+    );
+    expect(autor.getIsoAlpha3()).toBe(Object.getOwnPropertyDescriptor(pais, 'isoAlpha3')?.value);
+    expect(autor.getIdPais()).toBe(Object.getOwnPropertyDescriptor(autorProps, 'idPais')?.value);
+    expect(autor.getBandeira()).toBe(Object.getOwnPropertyDescriptor(pais, 'bandeira')?.value);
+    expect(autor.getTotalLivros()).toBe(autorProps.totalLivros);
+    expect(autor.getRevisar()).toBe(autorProps.revisar);
   });
 
   it('deve reconstruir um autor existente', () => {
     const id = 'autor-123';
     const autorProps = {
       nome: defaultNome,
-      pais: defaultPais,
-    };
+      nomePais: defaultPais,
+    } as unknown as AutorInterface;
 
     const autor = Autor.reconstitute(id, autorProps);
 
     expect(autor.getId()).toBe('autor-123');
-    expect(autor.getNome().toString()).toBe(autorProps.nome.toString());
+    expect(autor.getNome().toString()).toBe(autorProps.nome?.toString());
   });
 
   it('deve atualizar dados do autor', () => {
     const autorProps = {
       nome: defaultNome,
-      pais: defaultPais,
-    };
+      nomePais: defaultPais,
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
-    const novaBiografia = 'Novo resumo de biografia';
+    const nomePais = 'Nárnia';
 
-    autor.update({ biografia: novaBiografia });
+    autor.update({ pais: { nome: nomePais, nomePortugues: nomePais } });
 
-    expect(autor.getBiografia()).toBe(novaBiografia);
+    expect(autor.getNomePais()).toBe(nomePais);
   });
 
-  it('deve comparar dois autores pelo ID', () => {
+  it('deve retornar igualdade de autores por valores', () => {
     const autorProps = {
       nome: defaultNome,
-    };
+      revisar: true,
+      totalLivros: 3,
+      imagemPadrao: 'imagemPadrao.jpg',
+      imagemDispositivos: 'imagemDispositivos.jpg',
+      urlReferencia: 'https://example.com/autor',
+      nomePais: 'País Exemplo',
+      isoAlpha3: 'PEX',
+      idPais: 25,
+      bandeira: 'http://example.com/bandeira.jpg',
+    } as unknown as AutorInterface;
 
-    const id = 'autor-123';
-    const autor1 = Autor.reconstitute(id, autorProps);
-    const autor2 = Autor.reconstitute(id, autorProps);
+    const autor1 = Autor.create(autorProps);
+    const autor2 = Autor.reconstitute('123456', autorProps);
 
     expect(autor1.equals(autor2)).toBe(true);
   });
 
-  it('deve identificar autores diferentes', () => {
+  it('deve retornar desigualdade por propriedades diferentes', () => {
     const autorProps = {
       nome: defaultNome,
-    };
+      revisar: true,
+      totalLivros: 3,
+      imagemPadrao: 'imagemPadrao.jpg',
+      imagemDispositivos: 'imagemDispositivos.jpg',
+      urlReferencia: 'https://example.com/autor',
+      nomePais: 'País Exemplo',
+      isoAlpha3: 'PEX',
+      idPais: 25,
+      bandeira: 'http://example.com/bandeira.jpg',
+    } as unknown as AutorInterface;
 
-    const autor1 = Autor.reconstitute('autor-123', autorProps);
-    const autor2 = Autor.reconstitute('autor-456', autorProps);
+    const autor1 = Autor.create(autorProps);
+    const autor2 = Autor.create({ ...autorProps, nome: 'novo autor', idPais: 26 });
 
     expect(autor1.equals(autor2)).toBe(false);
+  });
+
+  it('deve retornar desigualdade por objetos de tipos diferentes', () => {
+    const autorProps = {
+      nome: defaultNome,
+      revisar: true,
+      totalLivros: 3,
+      imagemPadrao: 'imagemPadrao.jpg',
+      imagemDispositivos: 'imagemDispositivos.jpg',
+      urlReferencia: 'https://example.com/autor',
+      nomePais: 'País Exemplo',
+      isoAlpha3: 'PEX',
+      idPais: 25,
+      bandeira: 'http://example.com/bandeira.jpg',
+    } as unknown as AutorInterface;
+
+    const autor1 = Autor.create(autorProps);
+    const autor2 = { nome: 'novo autor', idPais: 26 };
+
+    expect(autor1.equals(autor2 as unknown as Entity)).toBe(false);
   });
 
   it('deve retornar representação em string', () => {
     const autorProps = {
       nome: defaultNome,
-      biografia: defaultBiografia,
-      dataNascimento: defaultNascimento,
-      pais: defaultPais,
-    };
+      nomePais: defaultPais,
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
-    const str = autor.toString();
+    const str = autor.getNome();
 
-    expect(str).toContain(autorProps.nome.toString());
-    expect(str).toContain('Autor');
+    expect(str).toContain(autorProps.nome?.toString());
   });
 
   it('deve manter dados opcionais quando atualizados', () => {
-    const autor = Autor.create({ nome: defaultNome });
-
+    const autor = Autor.create({ nome: defaultNome } as unknown as AutorInterface);
     autor.update({
-      biografia: defaultBiografia,
-      dataNascimento: defaultNascimento,
-      pais: defaultPais,
+      pais: { nome: defaultPais, nomePortugues: defaultPais },
     });
 
-    expect(autor.getBiografia()).toBe(defaultBiografia);
-    expect(autor.getDataNascimento()).toBe(defaultNascimento);
-    expect(autor.getPais()).toBe(defaultPais);
+    expect(autor.getNomePais()).toBe(defaultPais);
   });
 
   it('deve lançar erro ao criar autor sem nome', () => {
     expect(() => {
-      Autor.create({ nome: null as unknown as Nome });
-    }).toThrow('Nome do autor é obrigatório');
+      Autor.create({ nome: undefined } as unknown as AutorInterface);
+    }).toThrow('Nome é obrigatório');
   });
 
   it('deve lançar erro ao reconstruir autor sem nome', () => {
     expect(() => {
-      Autor.reconstitute('autor-123', { nome: null as unknown as Nome });
-    }).toThrow('Nome do autor é obrigatório');
+      Autor.reconstitute('autor-123', {
+        nome: undefined,
+      } as unknown as AutorInterface);
+    }).toThrow('Nome é obrigatório');
   });
 
   it('deve lançar erro ao atualizar autor removendo nome', () => {
-    const autor = Autor.create({ nome: defaultNome });
+    const autor = Autor.create({ nome: defaultNome } as unknown as AutorInterface);
 
     expect(() => {
-      autor.update({ nome: null as unknown as Nome });
+      autor.update({ nome: undefined });
     }).toThrow('Nome do autor é obrigatório');
+  });
+
+  it('deve lançar erro ao reconstituir autor com id vazio', () => {
+    expect(() => {
+      Autor.reconstitute('', { nome: defaultNome } as unknown as AutorInterface);
+    }).toThrow('ID do autor não informado ou inválido');
+  });
+
+  it('deve atualizar um autor a partir de objeto parcial', () => {
+    const autorProps = {
+      nome: defaultNome,
+      nomePais: defaultPais,
+    } as unknown as AutorInterface;
+
+    const autor = Autor.create(autorProps);
+    const novoNome = 'Novo Nome do Autor';
+
+    autor.update({ nome: novoNome });
+
+    expect(autor.getNome().toString()).toBe(novoNome);
+    expect(autor.getNomePais()).toBe(defaultPais);
+  });
+
+  it('deve retornar JSON string com os dados do autor', () => {
+    const autorProps = {
+      nome: defaultNome,
+      nomePais: defaultPais,
+    } as unknown as AutorInterface;
+
+    const autor = Autor.create(autorProps);
+    const jsonString = autor.toJSONString();
+    const data = JSON.parse(jsonString);
+
+    expect(data).toHaveProperty('id', autor.getId());
+    expect(data).toHaveProperty('nome', autorProps.nome?.toString());
+    expect(data).toHaveProperty('nomePais', defaultPais);
   });
 });

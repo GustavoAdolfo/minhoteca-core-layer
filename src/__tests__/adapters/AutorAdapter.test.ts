@@ -1,44 +1,81 @@
 import { AutorAdapter } from '../../adapters/AutorAdapter';
 import { Autor } from '../../entities/Autor';
 import { Nome } from '../../value-objects/Nome';
-import { Data } from '../../value-objects/Data';
+import { AutorInterface } from '../../interfaces/autor.interface';
+import { AutorDTO } from '../../dtos/AutorDTO';
+import { PaisDTO } from '../../dtos/PaisDTO';
 
 const defaultNome = new Nome('Clarice Lispector');
-const defaultPais = 'Brasil';
-const defaultBiografia = 'Autora modernista';
-const defaultNascimento = new Data('1920-12-10');
+const defaultPais = {
+  nome: 'Brasil',
+  nomePortugues: 'Brasil',
+  isoAlpha3: 'BRA',
+  isoAlpha2: 'BR',
+  isoNumeric: 76,
+  bandeira:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIF',
+};
 
 describe('AutorAdapter', () => {
   it('deve converter Autor para DTO', () => {
     const autorProps = {
-      nome: defaultNome,
-      pais: defaultPais,
-    };
+      nome: defaultNome.toString(),
+      pais: defaultPais as PaisDTO,
+      idPais: defaultPais.isoNumeric,
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
     const dto = AutorAdapter.toDTO(autor);
 
     expect(dto.id).toBe(autor.getId());
-    expect(dto.nome).toBe(autorProps.nome.toString());
-    expect(dto.pais).toBe(autorProps.pais);
+    expect(dto.nome).toBe(autorProps.nome?.toString());
+    expect(dto.idPais).toBe(defaultPais.isoNumeric);
+    expect(dto.pais).toMatchObject({
+      nome: defaultPais.nome,
+      isoAlpha3: defaultPais.isoAlpha3,
+      bandeira: defaultPais.bandeira,
+      isoNumeric: defaultPais.isoNumeric,
+    });
+  });
+  it('deve converter Autor para DTO sem total de livros', () => {
+    const autorProps = {
+      nome: defaultNome.toString(),
+      pais: defaultPais as PaisDTO,
+      idPais: defaultPais.isoNumeric,
+      totalLivros: undefined,
+    } as unknown as AutorInterface;
+
+    const autor = Autor.create(autorProps);
+    const dto = AutorAdapter.toDTO(autor);
+
+    expect(dto.id).toBe(autor.getId());
+    expect(dto.nome).toBe(autorProps.nome?.toString());
+    expect(dto.idPais).toBe(defaultPais.isoNumeric);
+    expect(dto.pais).toMatchObject({
+      nome: defaultPais.nome,
+      isoAlpha3: defaultPais.isoAlpha3,
+      bandeira: defaultPais.bandeira,
+      isoNumeric: defaultPais.isoNumeric,
+    });
+    expect(dto.totalLivros).toBe(0);
   });
 
   it('deve converter DTO de criação para props', () => {
     const dto = {
       nome: defaultNome.toString(),
-      pais: defaultPais,
-    };
+      nomePais: defaultPais,
+    } as unknown as AutorDTO;
 
     const props = AutorAdapter.fromCreateDTO(dto);
 
-    expect(props.nome.toString()).toBe(dto.nome);
-    expect(props.pais).toBe(dto.pais);
+    expect(props.getNome()).toBe(dto.nome!);
+    expect([dto.pais?.nomePortugues, dto.pais?.nome]).toContain(props.getNomePais());
   });
 
   it('deve converter lista de Autores para lista de DTOs', () => {
     const autores = [
-      Autor.create({ nome: defaultNome }),
-      Autor.create({ nome: new Nome('João Cabral') }),
+      Autor.create({ nome: defaultNome.toString() } as unknown as AutorInterface),
+      Autor.create({ nome: 'João Cabral' } as unknown as AutorInterface),
     ];
 
     const dtos = AutorAdapter.toDTOList(autores);
@@ -50,45 +87,59 @@ describe('AutorAdapter', () => {
 
   it('deve incluir dados opcionais no DTO quando presentes', () => {
     const autorProps = {
-      nome: defaultNome,
-      biografia: defaultBiografia,
-      dataNascimento: defaultNascimento,
+      nome: defaultNome.toString(),
       pais: defaultPais,
-    };
+      imagemPadrao: 'https://example.com/default.jpg',
+      imagemDispositivos: 'https://example.com/mobile.jpg',
+      urlReferencia: 'https://example.com/author?ref=id',
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
     const dto = AutorAdapter.toDTO(autor);
 
-    expect(dto.biografia).toBe(autorProps.biografia);
-    expect(dto.dataNascimento).toBe(defaultNascimento.toPrimitive());
-    expect(dto.pais).toBe(defaultPais);
+    expect(dto.nome).toBe(autorProps.nome);
+    expect(dto.pais).toMatchObject({
+      nome: defaultPais.nome,
+      isoAlpha3: defaultPais.isoAlpha3,
+      bandeira: defaultPais.bandeira,
+      isoNumeric: defaultPais.isoNumeric,
+    });
+    expect(dto.imagemPadrao).toBe(autorProps.imagemPadrao);
+    expect(dto.imagemDispositivos).toBe(autorProps.imagemDispositivos);
+    expect(dto.urlReferencia).toBe(autorProps.urlReferencia);
   });
 
   it('deve omitir dados opcionais no DTO quando ausentes', () => {
     const autorProps = {
-      nome: defaultNome,
-    };
+      nome: defaultNome.toString(),
+    } as unknown as AutorInterface;
 
     const autor = Autor.create(autorProps);
     const dto = AutorAdapter.toDTO(autor);
 
-    expect(dto.biografia).toBeUndefined();
-    expect(dto.dataNascimento).toBeUndefined();
-    expect(dto.pais).toBeUndefined();
+    expect(dto.pais).toMatchObject({
+      nome: undefined,
+      isoAlpha3: undefined,
+      bandeira: undefined,
+      isoNumeric: undefined,
+    });
+    expect(dto.urlReferencia).toBeUndefined();
+    expect(dto.imagemPadrao).toBeUndefined();
   });
 
   it('deve preservar campos extras quando atualizados no Autor', () => {
-    const autor = Autor.create({ nome: defaultNome });
+    const autor = Autor.create({ nome: defaultNome.toString() } as unknown as AutorInterface);
     autor.update({
-      biografia: defaultBiografia,
-      dataNascimento: defaultNascimento,
       pais: defaultPais,
     });
 
     const dto = AutorAdapter.toDTO(autor);
 
-    expect(dto.biografia).toBe(defaultBiografia);
-    expect(dto.dataNascimento).toBe(defaultNascimento.toPrimitive());
-    expect(dto.pais).toBe(defaultPais);
+    expect(dto.pais).toMatchObject({
+      nome: defaultPais.nome,
+      isoAlpha3: defaultPais.isoAlpha3,
+      bandeira: defaultPais.bandeira,
+      isoNumeric: defaultPais.isoNumeric,
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { Data } from '../../value-objects/Data';
+import { Data, ValueObject } from '../../value-objects';
 
 describe('Data Value Object', () => {
   it('deve criar uma data válida a partir de string ISO', () => {
@@ -30,6 +30,12 @@ describe('Data Value Object', () => {
     const data1 = new Data('2020-01-15T00:00:00Z');
     const data2 = new Data('2020-01-16T00:00:00Z');
     expect(data1.equals(data2)).toBe(false);
+  });
+
+  it('deve retornar desigualdade para objetos diferentes', () => {
+    const data1 = new Data('2020-01-15T00:00:00Z');
+    const data2 = '2020-01-16T00:00:00Z';
+    expect(data1.equals(data2 as unknown as ValueObject)).toBe(false);
   });
 
   it('deve verificar se data é anterior a outra', () => {

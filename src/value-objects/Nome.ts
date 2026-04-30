@@ -9,14 +9,28 @@ export class Nome extends ValueObject {
   private static readonly MIN_LENGTH = 2;
   private static readonly MAX_LENGTH = 255;
 
-  constructor(value: string) {
+  constructor(value: object | string | undefined) {
     super();
+    if (value === undefined) {
+      throw new Error('Nome é obrigatório');
+    }
     this.validate(value);
-    this.value = value.trim();
+    this.value =
+      value && typeof value === 'object'
+        ? Object.getOwnPropertyDescriptor(value, 'value')?.value?.trim()
+        : (value as string)?.trim();
   }
 
-  private validate(value: string): void {
-    const trimmed = value.trim();
+  private validate(value: object | string): void {
+    if (value && typeof value === 'object') {
+      value = Object.getOwnPropertyDescriptor(value, 'value')?.value?.toString() ?? '';
+    }
+
+    if (!value || (value as string).trim().length === 0) {
+      throw new Error('Nome é obrigatório');
+    }
+
+    const trimmed = (value as string).trim();
 
     if (trimmed.length < Nome.MIN_LENGTH) {
       throw new Error(`Nome deve ter no mínimo ${Nome.MIN_LENGTH} caracteres`);
@@ -40,5 +54,9 @@ export class Nome extends ValueObject {
 
   toString(): string {
     return this.value;
+  }
+
+  toJSON(): string {
+    return JSON.stringify({ value: this.toPrimitive() });
   }
 }

@@ -7,17 +7,18 @@ import { ValueObject } from '../value-objects/ValueObject';
 export class Email extends ValueObject {
   private readonly value: string;
 
-  constructor(value: string) {
+  constructor(value: string | { value: string }) {
     super();
     this.validate(value);
-    this.value = value.toLowerCase().trim();
+    this.value =
+      typeof value === 'string' ? value.toLowerCase().trim() : value?.value.toLowerCase().trim();
   }
 
-  private validate(value: string): void {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const trimmed = value.trim();
+  private validate(value: string | { value: string }): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/m;
+    const trimmed = typeof value === 'string' ? value.trim() : value?.value.trim();
     if (!emailRegex.test(trimmed)) {
-      throw new Error(`Email inválido: ${value}`);
+      throw new Error(`Email inválido: ${trimmed}`);
     }
   }
 
@@ -34,5 +35,9 @@ export class Email extends ValueObject {
 
   toString(): string {
     return this.value;
+  }
+
+  toJSON(): string {
+    return JSON.stringify({ value: this.toPrimitive() });
   }
 }

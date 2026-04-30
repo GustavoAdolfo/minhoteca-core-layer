@@ -7,8 +7,11 @@ import { ValueObject } from '../value-objects/ValueObject';
 export class ISBN extends ValueObject {
   private readonly value: string;
 
-  constructor(value: string) {
+  constructor(value: string | undefined) {
     super();
+    if (value === undefined) {
+      throw new Error('ISBN é obrigatório');
+    }
     this.validate(value);
     this.value = value.replace(/[^0-9X]/g, '').toUpperCase();
   }
