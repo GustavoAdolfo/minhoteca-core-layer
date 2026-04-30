@@ -35,7 +35,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer.git"
+    "url": "git+https://github.com/GustavoAdolfo/minhoteca-core-layer.git"
   },
   "bugs": {
     "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer/issues"
