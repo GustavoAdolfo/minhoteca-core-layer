@@ -1,5 +1,5 @@
 ![GitHub](https://img.shields.io/github/license/GustavoAdolfo/minhoteca-core-layer)
-![npm](https://img.shields.io/npm/v/@GustavoAdolfo/minhoteca-core-layer)
+![npm](https://img.shields.io/npm/v/@gustavoadolfo/minhoteca-core-layer)
 ![CI](https://github.com/GustavoAdolfo/minhoteca-core-layer/actions/workflows/ci.yml/badge.svg)
 ![Tests](https://img.shields.io/badge/tests-+100%20passed-success)
 
@@ -51,7 +51,7 @@ npm install @gustavoadolfo/minhoteca-core-layer
 ### Uso Básico
 
 ```typescript
-import { Livro, Nome, ISBN, Data, StatusLivro } from '@GustavoAdolfo/minhoteca-core-layer';
+import { Livro, Nome, ISBN, Data, StatusLivro } from '@gustavoadolfo/minhoteca-core-layer';
 
 // Criar um livro
 const livro = Livro.create({
@@ -158,7 +158,7 @@ Escolhemos MIT para incentivar:
 ## 🔗 Links
 
 - [GitHub](https://github.com/GustavoAdolfo/minhoteca-core-layer)
-- [npm](https://www.npmjs.com/package/@GustavoAdolfo/minhoteca-core-layer)
+- [npm](https://www.npmjs.com/package/@gustavoadolfo/minhoteca-core-layer)
 - [Issues](https://github.com/GustavoAdolfo/minhoteca-core-layer/issues)
 
 ## 💬 Suporte

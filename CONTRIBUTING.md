@@ -18,8 +18,8 @@ Esperamos que todos os colaboradores sigam um comportamento respeitoso e inclusi
 ### 1. Fork e Clone
 
 ```bash
-# Fork o repositório no GitHub
-git clone https://github.com/GustavoAdolfo/minhoteca-core-layer.git
+# 1. Fork o repositório no GitHub
+git clone https://github.com/SEU-USUARIO/minhoteca-core-layer.git
 cd minhoteca-core-layer
 git remote add upstream https://github.com/GustavoAdolfo/minhoteca-core-layer.git
 ```
@@ -154,6 +154,7 @@ src/
 ├── dtos/              # Data Transfer Objects
 ├── adapters/          # Adapters entre entities e DTOs
 ├── errors/            # Erros customizados de domínio
+├── services/          # Serviços core (ex: LogService)
 ├── __tests__/         # Testes (espelha estrutura do src/)
 └── index.ts           # Barrel export
 ```
