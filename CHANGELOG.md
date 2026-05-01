@@ -5,6 +5,18 @@ Todos os mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/),
 e este projeto segue [Semantic Versioning](https://semver.org/).
 
+## [1.0.2] - 2026-05-01
+
+### Added
+
+- Exportação da interface PageData para uso em casos de uso e repositórios
+
+## [1.0.1] - 2026-04-29
+
+### Added
+
+- Ajuste de versionamento para publicação de pacote
+
 ## [1.0.0] - 2026-04-29
 
 ### Added
