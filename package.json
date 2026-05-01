@@ -1,6 +1,6 @@
 {
   "name": "@gustavoadolfo/minhoteca-core-layer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Camada principal de entidades, objetos de valor e DTOs do projeto Minhoteca",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +35,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer.git"
+    "url": "git+https://github.com/GustavoAdolfo/minhoteca-core-layer.git"
   },
   "bugs": {
     "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer/issues"
