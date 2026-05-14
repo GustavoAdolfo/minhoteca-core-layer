@@ -1,4 +1,4 @@
-import { Data, ValueObject } from '../../value-objects';
+import { Data, ValueObject } from '../../../layer/nodejs/src/value-objects';
 
 describe('Data Value Object', () => {
   it('deve criar uma data válida a partir de string ISO', () => {

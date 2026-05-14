@@ -1,4 +1,4 @@
-import { EditoraDTO } from '../../dtos';
+import { EditoraDTO } from '../../../layer/nodejs/src/dtos';
 
 describe('EditoraDTO', () => {
   it('deve converter AutorDTO para um json válido', () => {

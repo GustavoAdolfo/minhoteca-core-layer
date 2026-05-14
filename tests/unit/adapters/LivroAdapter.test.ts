@@ -1,9 +1,9 @@
-import { LivroAdapter } from '../../adapters/LivroAdapter';
-import { Livro } from '../../entities/Livro';
-import { StatusLivro } from '../../enums';
-import { ISBN } from '../../value-objects/ISBN';
-import { LivroDTO } from '../../dtos/LivroDTO';
-import { LivroInterface } from '../../interfaces/livro.interface';
+import { LivroAdapter } from '../../../layer/nodejs/src/adapters/LivroAdapter';
+import { Livro } from '../../../layer/nodejs/src/entities/Livro';
+import { StatusLivro } from '../../../layer/nodejs/src/enums';
+import { ISBN } from '../../../layer/nodejs/src/value-objects/ISBN';
+import { LivroDTO } from '../../../layer/nodejs/src/dtos/LivroDTO';
+import { LivroInterface } from '../../../layer/nodejs/src/interfaces/livro.interface';
 
 describe('LivroAdapter', () => {
   const mockLivroProps = {

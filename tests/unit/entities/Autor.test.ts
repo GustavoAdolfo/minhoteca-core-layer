@@ -1,6 +1,6 @@
-import { Autor } from '../../entities/Autor';
-import { Entity } from '../../entities/Entity';
-import { AutorInterface } from '../../interfaces/autor.interface';
+import { Autor } from '../../../layer/nodejs/src/entities/Autor';
+import { Entity } from '../../../layer/nodejs/src/entities/Entity';
+import { AutorInterface } from '../../../layer/nodejs/src/interfaces/autor.interface';
 
 const defaultNome = 'Paulo Coelho';
 const defaultPais = 'Brasil';

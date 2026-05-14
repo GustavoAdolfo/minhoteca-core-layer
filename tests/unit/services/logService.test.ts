@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LogService, LogContext } from '../../services/logService';
+import { LogService, LogContext } from '../../../layer/nodejs/src/services/logService';
 import { Logger } from 'winston';
 
 describe('LogService', () => {
