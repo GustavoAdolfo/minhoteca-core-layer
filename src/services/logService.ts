@@ -132,8 +132,12 @@ export class LogService {
       'phone',
     ];
 
+    const seen = new WeakSet();
+
     const sanitize = (obj: any): any => {
       if (!obj || typeof obj !== 'object') return obj;
+      if (seen.has(obj)) return '[CIRCULAR]';
+      seen.add(obj);
 
       if (Array.isArray(obj)) {
         return obj.map(sanitize);
@@ -158,12 +162,14 @@ export class LogService {
   /**
    * Remove campos undefined do objeto
    */
-  private removeUndefinedFields(obj: any): any {
+  private removeUndefinedFields(obj: any, seen = new WeakSet()): any {
     if (!obj || typeof obj !== 'object') return obj;
+    if (seen.has(obj)) return '[CIRCULAR]';
+    seen.add(obj);
 
     if (Array.isArray(obj)) {
       return obj
-        .map((item) => this.removeUndefinedFields(item))
+        .map((item) => this.removeUndefinedFields(item, seen))
         .filter((item) => item !== undefined);
     }
 
@@ -171,7 +177,7 @@ export class LogService {
     for (const key in obj) {
       if (obj[key] !== undefined && obj[key] !== null) {
         result[key] =
-          typeof obj[key] === 'object' ? this.removeUndefinedFields(obj[key]) : obj[key];
+          typeof obj[key] === 'object' ? this.removeUndefinedFields(obj[key], seen) : obj[key];
       }
     }
     return Object.keys(result).length > 0 ? result : null;

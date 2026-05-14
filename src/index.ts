@@ -34,10 +34,6 @@ export {
 
 export { StatusLivro } from './enums';
 
-export {
-  LivroInterface,
-  AutorInterface,
-  EditoraInterface,
-  UseCaseInterface,
-  PaisInterface,
-} from './interfaces';
+export * from './interfaces';
+
+export * from './services';
