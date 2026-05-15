@@ -1,5 +1,5 @@
-import { Pais } from '../../entities/Pais';
-import { PaisInterface } from '../../interfaces/pais.interface';
+import { Pais } from '../../../layer/nodejs/src/entities/Pais';
+import { PaisInterface } from '../../../layer/nodejs/src/interfaces/pais.interface';
 
 describe('Pais Entity', () => {
   it('deve criar uma instância de Pais com dados válidos', () => {

@@ -1,4 +1,4 @@
-import { PaisDTO } from '../../dtos';
+import { PaisDTO } from '../../../layer/nodejs/src/dtos';
 
 describe('PaisDTO', () => {
   it('deve converter PaisDTO para um json válido', () => {

@@ -1,4 +1,4 @@
-import { Nome } from '../../value-objects/Nome';
+import { Nome } from '../../../layer/nodejs/src/value-objects/Nome';
 
 describe('Nome Value Object', () => {
   it('deve criar um nome válido', () => {

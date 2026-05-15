@@ -1,9 +1,9 @@
-import { EditoraAdapter } from '../../adapters/EditoraAdapter';
-import { Editora } from '../../entities/Editora';
-import { Nome } from '../../value-objects/Nome';
-import { Email } from '../../value-objects/Email';
-import { EditoraInterface } from '../../interfaces/editora.interface';
-import { EditoraDTO } from '../../dtos/EditoraDTO';
+import { EditoraAdapter } from '../../../layer/nodejs/src/adapters/EditoraAdapter';
+import { Editora } from '../../../layer/nodejs/src/entities/Editora';
+import { Nome } from '../../../layer/nodejs/src/value-objects/Nome';
+import { Email } from '../../../layer/nodejs/src/value-objects/Email';
+import { EditoraInterface } from '../../../layer/nodejs/src/interfaces/editora.interface';
+import { EditoraDTO } from '../../../layer/nodejs/src/dtos/EditoraDTO';
 
 describe('EditoraAdapter', () => {
   describe('toDTO', () => {

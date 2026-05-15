@@ -1,5 +1,5 @@
-import { AutorDTO } from '../../dtos/AutorDTO';
-import { PaisDTO } from '../../dtos/PaisDTO';
+import { AutorDTO } from '../../../layer/nodejs/src/dtos/AutorDTO';
+import { PaisDTO } from '../../../layer/nodejs/src/dtos/PaisDTO';
 
 describe('AutorDTO', () => {
   it('deve converter AutorDTO para um json válido', () => {

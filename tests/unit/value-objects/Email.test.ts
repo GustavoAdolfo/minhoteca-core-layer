@@ -1,4 +1,4 @@
-import { Email, ValueObject } from '../../value-objects';
+import { Email, ValueObject } from '../../../layer/nodejs/src/value-objects';
 
 describe('Email Value Object', () => {
   it('deve criar um email válido', () => {

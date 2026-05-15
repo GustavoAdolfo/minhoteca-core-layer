@@ -1,6 +1,6 @@
-import { PaisAdapter } from '../../adapters/PaisAdapter';
-import { Pais } from '../../entities/Pais';
-import { PaisDTO } from '../../dtos/PaisDTO';
+import { PaisAdapter } from '../../../layer/nodejs/src/adapters/PaisAdapter';
+import { Pais } from '../../../layer/nodejs/src/entities/Pais';
+import { PaisDTO } from '../../../layer/nodejs/src/dtos/PaisDTO';
 
 describe('PaisAdapter', () => {
   const paisProps = {

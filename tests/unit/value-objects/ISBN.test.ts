@@ -1,4 +1,4 @@
-import { ISBN } from '../../value-objects/ISBN';
+import { ISBN } from '../../../layer/nodejs/src/value-objects/ISBN';
 
 describe('ISBN Value Object', () => {
   it('deve criar um ISBN-13 válido', () => {

@@ -1,5 +1,5 @@
-import { AutorDTO, EditoraDTO, LivroDTO } from '../../dtos';
-import { StatusLivro } from '../../enums';
+import { AutorDTO, EditoraDTO, LivroDTO } from '../../../layer/nodejs/src/dtos';
+import { StatusLivro } from '../../../layer/nodejs/src/enums';
 
 describe('LivroDTO', () => {
   it('deve converter LivroDTO para um json válido', () => {

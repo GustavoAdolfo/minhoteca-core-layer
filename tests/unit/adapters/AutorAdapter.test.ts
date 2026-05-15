@@ -1,9 +1,9 @@
-import { AutorAdapter } from '../../adapters/AutorAdapter';
-import { Autor } from '../../entities/Autor';
-import { Nome } from '../../value-objects/Nome';
-import { AutorInterface } from '../../interfaces/autor.interface';
-import { AutorDTO } from '../../dtos/AutorDTO';
-import { PaisDTO } from '../../dtos/PaisDTO';
+import { AutorAdapter } from '../../../layer/nodejs/src/adapters/AutorAdapter';
+import { Autor } from '../../../layer/nodejs/src/entities/Autor';
+import { Nome } from '../../../layer/nodejs/src/value-objects/Nome';
+import { AutorInterface } from '../../../layer/nodejs/src/interfaces/autor.interface';
+import { AutorDTO } from '../../../layer/nodejs/src/dtos/AutorDTO';
+import { PaisDTO } from '../../../layer/nodejs/src/dtos/PaisDTO';
 
 const defaultNome = new Nome('Clarice Lispector');
 const defaultPais = {
@@ -134,7 +134,6 @@ describe('AutorAdapter', () => {
     });
 
     const dto = AutorAdapter.toDTO(autor);
-
     expect(dto.pais).toMatchObject({
       nome: defaultPais.nome,
       isoAlpha3: defaultPais.isoAlpha3,

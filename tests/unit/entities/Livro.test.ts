@@ -1,10 +1,10 @@
-import { Livro } from '../../entities/Livro';
-import { StatusLivro } from '../../enums';
-import { Nome } from '../../value-objects/Nome';
-import { ISBN } from '../../value-objects/ISBN';
-import { LivroInvalidoError } from '../../errors/DomainErrors';
-import { LivroInterface } from '../../interfaces/livro.interface';
-import { Entity } from '../../entities/Entity';
+import { Livro } from '../../../layer/nodejs/src/entities/Livro';
+import { StatusLivro } from '../../../layer/nodejs/src/enums';
+import { Nome } from '../../../layer/nodejs/src/value-objects/Nome';
+import { ISBN } from '../../../layer/nodejs/src/value-objects/ISBN';
+import { LivroInvalidoError } from '../../../layer/nodejs/src/errors/DomainErrors';
+import { LivroInterface } from '../../../layer/nodejs/src/interfaces/livro.interface';
+import { Entity } from '../../../layer/nodejs/src/entities/Entity';
 
 describe('Livro Entity', () => {
   const criarLivroProps = () =>

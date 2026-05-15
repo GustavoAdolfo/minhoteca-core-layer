@@ -1,6 +1,6 @@
-import { Editora } from '../../entities/Editora';
-import { Entity } from '../../entities/Entity';
-import { EditoraInterface } from '../../interfaces/editora.interface';
+import { Editora } from '../../../layer/nodejs/src/entities/Editora';
+import { Entity } from '../../../layer/nodejs/src/entities/Entity';
+import { EditoraInterface } from '../../../layer/nodejs/src/interfaces/editora.interface';
 
 describe('Editora Entity', () => {
   it('deve criar uma nova editora', () => {
