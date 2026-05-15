@@ -1,4 +1,3 @@
-// ✅ CORRETO - Formato ESLint 9.x (Flat Config)
 const tseslint = require('@typescript-eslint/eslint-plugin');
 const tsparser = require('@typescript-eslint/parser');
 
