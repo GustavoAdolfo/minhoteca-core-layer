@@ -11,8 +11,6 @@
   ],
   "scripts": {
     "build": "tsc && tsc-alias",
-    "build:layer": "npm run build && mkdir -p ./layer/nodejs/node_modules/@gustavoadolfo/minhoteca-core-layer && cp -r ./dist ./layer/nodejs/node_modules/@gustavoadolfo/minhoteca-core-layer/ && cp ./package.build.json ./layer/nodejs/node_modules/@gustavoadolfo/minhoteca-core-layer/package.json && cd ./layer/nodejs/node_modules/@gustavoadolfo/minhoteca-core-layer && npm install --omit=dev",
-    "build:dist": "npm run build",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
@@ -20,11 +18,7 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "lint:staged": "lint-staged",
     "format": "prettier --write \"**/*.{js,ts,md,json,yml,yaml}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,md,json,yml,yaml}\"",
-    "clean": "rm -rf dist coverage",
-    "postinstall": "husky install",
-    "prepare": "npm run build:dist",
-    "prepack": "npm run build:dist"
+    "format:check": "prettier --check \"**/*.{js,ts,md,json,yml,yaml}\""
   },
   "keywords": [
     "minhoteca",
@@ -41,36 +35,11 @@
     "url": "https://github.com/GustavoAdolfo/minhoteca-core-layer/issues"
   },
   "homepage": "https://github.com/GustavoAdolfo/minhoteca-core-layer#readme",
-  "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.7.4",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
-    "@typescript-eslint/parser": "^8.17.0",
-    "commitlint": "^19.3.0",
-    "eslint": "^9.39.2",
-    "husky": "^9.0.11",
-    "jest": "^29.7.0",
-    "lint-staged": "^15.2.7",
-    "prettier": "^3.3.3",
-    "ts-jest": "^29.2.5",
-    "tsc-alias": "^1.8.16",
-    "typescript": "~5.5.4"
-  },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
-  },
-  "lint-staged": {
-    "*.{js,ts,json,md,yml,yaml}": [
-      "prettier --write"
-    ],
-    "src/**/*.{ts,tsx}": [
-      "eslint --max-warnings=0 --fix"
-    ]
   },
   "dependencies": {
     "winston": "^3.19.0",
