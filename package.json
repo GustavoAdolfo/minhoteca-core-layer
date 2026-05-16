@@ -10,7 +10,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "cd layer/nodejs && tsc && tsc-alias",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
