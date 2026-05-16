@@ -10,17 +10,15 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "cd layer/nodejs && tsc && tsc-alias",
+    "build": "tsc && tsc-alias",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "lint": "eslint layer/nodejs/src tests --ext .ts",
-    "lint:fix": "eslint layer/nodejs/src tests --ext .ts --fix",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "lint:staged": "lint-staged",
     "format": "prettier --write \"**/*.{js,ts,md,json,yml,yaml}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,md,json,yml,yaml}\"",
-    "clean": "rm -rf dist coverage",
-    "postinstall": "husky install"
+    "format:check": "prettier --check \"**/*.{js,ts,md,json,yml,yaml}\""
   },
   "keywords": [
     "minhoteca",
@@ -43,33 +41,8 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "lint-staged": {
-    "*.{js,ts,json,md,yml,yaml}": [
-      "prettier --write"
-    ],
-    "{layer/nodejs/src,tests}/**/*.{ts,tsx}": [
-      "eslint --max-warnings=0 --fix"
-    ]
-  },
   "dependencies": {
     "winston": "^3.19.0",
     "winston-cloudwatch": "^6.3.0"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^21.0.1",
-    "@commitlint/config-conventional": "^21.0.1",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^25.8.0",
-    "@typescript-eslint/eslint-plugin": "^8.59.3",
-    "@typescript-eslint/parser": "^8.59.3",
-    "commitlint": "^21.0.1",
-    "eslint": "^10.4.0",
-    "husky": "^9.1.7",
-    "jest": "^30.4.2",
-    "lint-staged": "^17.0.4",
-    "prettier": "^3.8.3",
-    "ts-jest": "^29.4.9",
-    "tsc-alias": "^1.8.17",
-    "typescript": "^6.0.3"
   }
 }

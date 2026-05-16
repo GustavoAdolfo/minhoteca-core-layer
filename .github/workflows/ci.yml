@@ -6,13 +6,16 @@ on:
   pull_request:
     branches: [main, develop]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -36,8 +39,56 @@ jobs:
         run: npm run build
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/coverage-final.json
           flags: unittests
           name: codecov-umbrella
+  terraform:
+    name: 'Terraform Deploy'
+    needs: build-and-test # Garante que o deploy só rode se os testes passarem
+    runs-on: ubuntu-latest
+    # Executa este job SOMENTE quando houver um push na branch main
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    permissions:
+      id-token: write # Necessário para interagir com o OIDC da AWS
+      contents: read
+
+    defaults:
+      run:
+        # Define o diretório onde os comandos do Terraform serão executados
+        working-directory: terraform/envs/prod
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (Necessário para o local-exec da Layer)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: 'npm'
+
+      - name: Configurar Credenciais da AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        # O auto-approve é essencial em ambientes de CI/CD pois não há interação humana
+        run: terraform apply -auto-approve tfplan

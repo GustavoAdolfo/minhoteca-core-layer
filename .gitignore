@@ -81,6 +81,10 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+dist_layer
+**/.terraform
+**/.terraform.lock.hcl
+**/*.zip
 
 # Gatsby files
 .cache/
@@ -141,4 +145,3 @@ vite.config.ts.timestamp-*
 # npm configuration with credentials
 .npmrc
 .vscode/settings.json
-layer/
