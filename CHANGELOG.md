@@ -5,6 +5,13 @@ Todos os mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/),
 e este projeto segue [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Nova entidade `Pais` com lógica de negócio e testes unitários (suporte a padrões ISO 3166)
+- Integração de deploy de infraestrutura com Terraform no pipeline de CI/CD utilizando autenticação AWS OIDC
+
 ## [1.0.2] - 2026-05-01
 
 ### Added

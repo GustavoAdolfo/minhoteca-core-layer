@@ -6,13 +6,16 @@ on:
   pull_request:
     branches: [main, develop]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -36,8 +39,84 @@ jobs:
         run: npm run build
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/coverage-final.json
           flags: unittests
           name: codecov-umbrella
+
+  create-pr-to-main:
+    name: 'Create PR to Main'
+    needs: build-and-test # Garante que o PR só será aberto se o build e os testes passarem
+    runs-on: ubuntu-latest
+    # Executa este job SOMENTE quando houver um push/merge na branch develop
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    permissions:
+      pull-requests: write # Permissão necessária para o bot do GitHub abrir o PR
+      contents: read
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_EXISTS=$(gh pr list --base main --head develop --state open --json number -q 'length')
+
+          if [ "$PR_EXISTS" -eq "0" ]; then
+            gh pr create --base main --head develop --title "🚀 Release: Atualização da \`main\` a partir da \`develop\`" --body "Este Pull Request foi aberto automaticamente após os testes passarem com sucesso na branch \`develop\`. Revise as alterações e aprove para promover para produção."
+          else
+            echo "Já existe um Pull Request aberto de develop para main. Nenhuma ação adicional necessária."
+          fi
+
+  terraform:
+    name: 'Terraform Deploy'
+    needs: build-and-test # Garante que o deploy só rode se os testes passarem
+    runs-on: ubuntu-latest
+    # Executa este job SOMENTE quando houver um push na branch main
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    permissions:
+      id-token: write # Necessário para interagir com o OIDC da AWS
+      contents: read
+
+    defaults:
+      run:
+        # Define o diretório onde os comandos do Terraform serão executados
+        working-directory: terraform/envs/prod
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (Necessário para o local-exec da Layer)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: 'npm'
+
+      - name: Configurar Credenciais da AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        # O auto-approve é essencial em ambientes de CI/CD pois não há interação humana
+        run: terraform apply -auto-approve tfplan
