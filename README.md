@@ -7,7 +7,7 @@
 
 **Camada principal de entidades e modelos de dados do projeto Minhoteca.**
 
-Este projeto oferece classes, objetos de valor e DTOs reutilizáveis para acelerar o desenvolvimento das funções Lambda e microsserviços do ecossistema Minhoteca.
+Este projeto oferece classes, objetos de valor e DTOs reutilizáveis, assim como serviços, para acelerar o desenvolvimento das funções Lambda e microsserviços do ecossistema Minhoteca.
 
 ## 🎯 Propósito Social
 
@@ -21,14 +21,14 @@ Minhoteca tem como missão facilitar o acesso gratuito à leitura, gestão de em
 
 ## ✨ Funcionalidades
 
-- **Entidades de Negócio:** Livro, Autor, Editora (com validações e lógica encapsulada)
+- **Entidades de Negócio:** Livro, Autor, Editora, País (com validações e lógica encapsulada)
 - **Objetos de Valor:** ISBN, Nome, Email, Data (com validação automática e imutabilidade)
 - **DTOs:** Facilita a integração entre camadas sem expor lógica interna
 - **Adapters:** Conversão automática entre Entities e DTOs
 - **Serviços Core:** `LogService` robusto integrado com Winston, nativo para AWS CloudWatch e com sanitização automática de dados sensíveis.
 - **Tratamento de Erros:** Erros customizados de domínio para melhor tratamento
 - **Testes Completos:** +100 testes unitários com alta cobertura de código
-- **CI/CD Automatizado:** Build, testes e deploy via GitHub Actions
+- **CI/CD Automatizado:** Build, testes e deploy via GitHub Actions (deploy de infraestrutura com Terraform)
 - **Pronto para AWS Lambda Layers:** Documentação completa de deployment
 
 ## 🚀 Começar Rápido
@@ -129,14 +129,14 @@ Contribuições em qualquer nível são bem-vindas:
 
 ## 📋 Roadmap
 
-**v0.2.0** (Próximo):
+**v1.1.0** (Próximo):
 
 - [ ] Entidade Empréstimo
 - [ ] Repository interfaces
 - [ ] DynamoDB examples
 - [ ] AWS SDK helpers
 
-**v0.3.0**:
+**v1.2.0**:
 
 - [ ] Rate limiting utilities
 - [ ] Logging helpers
