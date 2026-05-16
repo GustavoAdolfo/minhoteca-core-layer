@@ -14,8 +14,8 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
+    "lint": "eslint layer/nodejs/src tests --ext .ts",
+    "lint:fix": "eslint layer/nodejs/src tests --ext .ts --fix",
     "lint:staged": "lint-staged",
     "format": "prettier --write \"**/*.{js,ts,md,json,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,ts,md,json,yml,yaml}\"",
@@ -47,7 +47,7 @@
     "*.{js,ts,json,md,yml,yaml}": [
       "prettier --write"
     ],
-    "src/**/*.{ts,tsx}": [
+    "{layer/nodejs/src,tests}/**/*.{ts,tsx}": [
       "eslint --max-warnings=0 --fix"
     ]
   },
