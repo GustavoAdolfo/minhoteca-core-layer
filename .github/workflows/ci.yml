@@ -110,7 +110,8 @@ jobs:
       - name: Build Lambda Layer
         working-directory: ${{ github.workspace }}
         run: |
-          npm ci
+          cd layer/nodejs
+          npm install --omit=dev
           npm run build
           rm -rf dist_layer
           mkdir -p dist_layer/nodejs
