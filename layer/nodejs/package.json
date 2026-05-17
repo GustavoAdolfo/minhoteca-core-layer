@@ -1,6 +1,6 @@
 {
   "name": "@gustavoadolfo/minhoteca-core-layer",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Camada principal de entidades, objetos de valor e DTOs do projeto Minhoteca",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
