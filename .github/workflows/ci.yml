@@ -102,7 +102,7 @@ jobs:
       - name: Configurar Credenciais da AWS via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionMinhoteca
           aws-region: us-east-1
           role-session-name: GitHubActionsTerraformDeploy
           disable-retry: true
