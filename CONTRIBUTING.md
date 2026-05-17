@@ -189,7 +189,7 @@ export class Livro extends Entity<LivroProps> {
 
 - Coloque tests em `src/__tests__/` com sufixo `.test.ts`
 - Use nomes descritivos para suites e testes
-- Alcance mínimo de cobertura: 70%
+- Alcance mínimo de cobertura: 90%
 
 ```typescript
 describe('Livro Entity', () => {
