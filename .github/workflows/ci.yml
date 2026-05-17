@@ -108,7 +108,7 @@ jobs:
           disable-retry: true
 
       - name: Build Lambda Layer
-        working-directory: ${{ github.workspace }}/layer/nodejs
+        working-directory: ${{ github.workspace }}
         run: |
           npm ci
           npm run build
