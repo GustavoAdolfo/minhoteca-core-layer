@@ -145,3 +145,4 @@ vite.config.ts.timestamp-*
 # npm configuration with credentials
 .npmrc
 .vscode/settings.json
+layer/nodejs/package-lock.json
