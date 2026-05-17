@@ -14,7 +14,7 @@ resource "aws_lambda_layer_version" "coreLayer" {
 }
 
 data "external" "core_layer_version" {
-  program = ["node", "${path.module}/../../../layer/nodejs/version.mjs"]
+  program = ["node", "${path.module}/../../../version.mjs"]
 }
 
 data "archive_file" "core_layer_pack" {
