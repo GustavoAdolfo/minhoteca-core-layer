@@ -42,6 +42,6 @@ resource "null_resource" "core_layer_build" {
 data "archive_file" "core_layer_pack" {
   depends_on  = [null_resource.core_layer_build]
   type        = "zip"
-  source_dir  = "${path.module}/../../../dist_layer"
+  source_dir  = "${path.module}/../../dist_layer"
   output_path = "${path.module}/core_layer.zip"
 }
