@@ -20,11 +20,14 @@ data "external" "core_layer_version" {
 
 resource "null_resource" "core_layer_build" {
   triggers = {
-    src_hash = sha256(join("", [for f in sort(fileset("${path.module}/../../../layer/nodejs/src", "**/*")) : filesha256("${path.module}/../../../layer/nodejs/src/${f}")]))
+    src_hash   = sha256(join("", [for f in sort(fileset("${path.module}/../../../layer/nodejs/src", "**/*")) : filesha256("${path.module}/../../../layer/nodejs/src/${f}")]))
+    pkg_hash   = filesha256("${path.module}/../../../package.json")
+    always_run = timestamp() # Força o script a rodar sempre, essencial para o runner do GitHub Actions
   }
   provisioner "local-exec" {
-    command = <<EOF
-      cd ${path.module}/../../..
+    working_dir = "${path.module}/../../.."
+    interpreter = ["bash", "-e", "-c"] # Garante que o script pare imediatamente se ocorrer algum erro
+    command     = <<EOF
       npm ci
       npm run build
       rm -rf dist_layer
@@ -42,6 +45,6 @@ resource "null_resource" "core_layer_build" {
 data "archive_file" "core_layer_pack" {
   depends_on  = [null_resource.core_layer_build]
   type        = "zip"
-  source_dir  = "${path.module}/../../dist_layer"
+  source_dir  = "${path.module}/../../../dist_layer"
   output_path = "${path.module}/core_layer.zip"
 }
