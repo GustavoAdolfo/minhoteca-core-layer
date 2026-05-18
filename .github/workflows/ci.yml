@@ -107,21 +107,6 @@ jobs:
           role-session-name: GitHubActionsTerraformDeploy
           disable-retry: true
 
-      - name: Build Lambda Layer
-        working-directory: ${{ github.workspace }}
-        run: |
-          cd layer/nodejs
-          npm install --omit=dev
-          npm run build
-          rm -rf dist_layer
-          mkdir -p dist_layer/nodejs
-          cp package.json package-lock.json dist_layer/nodejs/
-          cd dist_layer/nodejs
-          npm ci --omit=dev
-          mkdir -p node_modules/@gustavoadolfo/minhoteca-core-layer
-          cp -r ../../dist node_modules/@gustavoadolfo/minhoteca-core-layer/
-          cp ../../package.json node_modules/@gustavoadolfo/minhoteca-core-layer/
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
