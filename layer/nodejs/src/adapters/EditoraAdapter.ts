@@ -24,16 +24,15 @@ export class EditoraAdapter {
    * Converte um DTO de criação para props de Entity
    */
   static fromCreateDTO(dto: EditoraDTO): Editora {
-    return Editora.create(
-      {
-        nome: dto.nome,
-        email: dto.email,
-        website: dto.website,
-        pais: dto.pais,
-        logoUrl: dto.logoUrl,
-      } as unknown as EditoraInterface,
-      dto.id
-    );
+    const data: EditoraInterface = {
+      nome: dto.nome,
+      email: dto.email,
+      website: dto.website,
+      pais: dto.pais,
+      logoUrl: dto.logoUrl,
+    };
+
+    return Editora.create(data, dto.id);
   }
 
   /**
