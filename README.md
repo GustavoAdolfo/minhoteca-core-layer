@@ -23,6 +23,7 @@ Minhoteca tem como missão facilitar o acesso gratuito à leitura, gestão de em
 
 - **Entidades de Negócio:** Livro, Autor, Editora, País (com validações e lógica encapsulada)
 - **Objetos de Valor:** ISBN, Nome, Email, Data (com validação automática e imutabilidade)
+- **Interfaces de Uso:** `PageDataType` e contratos para casos de uso e repositórios
 - **DTOs:** Facilita a integração entre camadas sem expor lógica interna
 - **Adapters:** Conversão automática entre Entities e DTOs
 - **Serviços Core:** `LogService` robusto integrado com Winston, nativo para AWS CloudWatch e com sanitização automática de dados sensíveis.
@@ -74,13 +75,17 @@ livro.devolver();
 ## 🏗️ Estrutura
 
 ```
-src/
-├── entities/       # Livro, Autor, Editora
+layer/nodejs/src/
+├── adapters/       # Conversão Entity ↔ DTO
+├── dtos/           # Data Transfer Objects
+├── entities/       # Livro, Autor, Editora, País
+├── enums/          # Enums de domínio
+├── errors/         # Erros de domínio
+├── interfaces/     # Contratos e tipos de uso
+├── services/       # Serviços Core
+├── utils/          # Utilitários e helpers
 ├── value-objects/  # ISBN, Email, Nome, Data
-├── dtos/          # Data Transfer Objects
-├── adapters/      # Conversão Entity ↔ DTO
-├── errors/        # Erros de domínio
-└── __tests__/     # Testes (61 casos)
+tests/unit/        # Testes unitários
 ```
 
 ## 🧪 Testes
