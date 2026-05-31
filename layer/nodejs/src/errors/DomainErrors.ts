@@ -37,3 +37,13 @@ export class EditoraInvalidaError extends DomainError {
     this.name = 'EditoraInvalidaError';
   }
 }
+
+/**
+ * Erro lançado quando um país é inválido
+ */
+export class PaisInvalidoError extends DomainError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PaisInvalidoError';
+  }
+}
