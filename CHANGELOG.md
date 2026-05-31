@@ -7,10 +7,16 @@ e este projeto segue [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.12] - 2026-05-31
+
 ### Added
 
 - Nova entidade `Pais` com lógica de negócio e testes unitários (suporte a padrões ISO 3166)
 - Integração de deploy de infraestrutura com Terraform no pipeline de CI/CD utilizando autenticação AWS OIDC
+
+### Changed
+
+- Documentação do README atualizada para alinhar à estrutura real do projeto
 
 ## [1.0.2] - 2026-05-01
 
