@@ -30,6 +30,7 @@ export {
   LivroInvalidoError,
   AutorInvalidoError,
   EditoraInvalidaError,
+  PaisInvalidoError,
 } from './errors/DomainErrors';
 
 export { StatusLivro } from './enums';
