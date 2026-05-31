@@ -51,7 +51,8 @@ jobs:
     needs: build-and-test # Garante que o PR só será aberto se o build e os testes passarem
     runs-on: ubuntu-latest
     # Executa este job SOMENTE quando houver um push/merge na branch develop
-    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    # E quando o commit NÃO for feito pelo bot de sincronização de release
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push' && github.actor != 'github-actions[bot]'
 
     permissions:
       pull-requests: write # Permissão necessária para o bot do GitHub abrir o PR
