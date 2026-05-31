@@ -1,6 +1,6 @@
 {
   "name": "@gustavoadolfo/minhoteca-core-layer",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Camada principal de entidades, objetos de valor e DTOs do projeto Minhoteca",
   "main": "layer/nodejs/dist/index.js",
   "types": "layer/nodejs/dist/index.d.ts",
@@ -60,15 +60,15 @@
     "@commitlint/config-conventional": "^21.0.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.8.0",
-    "@typescript-eslint/eslint-plugin": "^8.59.3",
-    "@typescript-eslint/parser": "^8.59.3",
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.59.4",
     "commitlint": "^21.0.1",
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "lint-staged": "^17.0.5",
     "prettier": "^3.8.3",
-    "ts-jest": "^29.4.9",
+    "ts-jest": "^29.4.11",
     "tsc-alias": "^1.8.17",
     "typescript": "^6.0.3"
   }
