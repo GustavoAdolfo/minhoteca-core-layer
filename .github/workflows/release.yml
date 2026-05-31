@@ -50,25 +50,37 @@ jobs:
 
       - name: Check and Bump Version
         id: version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Obtém a versão do package.json antes do merge e a versão atual
+          PACKAGE_NAME=$(jq -r .name package.json)
+          NPM_REGISTRY="https://npm.pkg.github.com"
+
           PREV_VERSION=$(git show HEAD~1:package.json | jq -r .version)
           CURR_VERSION=$(jq -r .version package.json)
+          PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version --registry "$NPM_REGISTRY" 2>/dev/null || true)
 
-          if [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
-            echo "Versão alterada manualmente no PR (de $PREV_VERSION para $CURR_VERSION). Pulando bump automático de patch."
-            # Cria a tag anotada localmente para a versão manual (o '|| true' previne erro se a tag já existir)
-            git tag -a "v$CURR_VERSION" -m "chore(release): $CURR_VERSION [skip ci]" || true
-            echo "tag_name=v$CURR_VERSION" >> $GITHUB_OUTPUT
+          if [ -n "$PUBLISHED_VERSION" ] && [ "$CURR_VERSION" = "$PUBLISHED_VERSION" ]; then
+            echo "A versão atual $CURR_VERSION já foi publicada. Será realizado bump automático para evitar erro de publicação duplicada."
+            NEED_BUMP=true
+          elif [ -n "$PUBLISHED_VERSION" ] && [ "$CURR_VERSION" != "$PUBLISHED_VERSION" ] && [ "$CURR_VERSION" = "$PREV_VERSION" ]; then
+            echo "Nenhuma alteração de versão detectada, mas a versão publicada atual é $PUBLISHED_VERSION. Será realizado bump automático."
+            NEED_BUMP=true
           else
-            echo "Nenhuma alteração de versão detectada. Realizando bump de patch automático..."
-            
+            NEED_BUMP=false
+          fi
+
+          if [ "$NEED_BUMP" != "true" ] && [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
+            echo "Versão alterada manualmente no PR (de $PREV_VERSION para $CURR_VERSION)."
+            echo "tag_name=v$CURR_VERSION" >> $GITHUB_OUTPUT
+            git tag -a "v$CURR_VERSION" -m "chore(release): $CURR_VERSION [skip ci]" || true
+          else
+            echo "Realizando bump de patch automático..."
             while true; do
-              # Faz o bump apenas nos arquivos, sem commitar nem criar tag ainda
               NEW_VERSION=$(npm version patch --no-git-tag-version)
-              
-              if git show-ref --tags --verify --quiet "refs/tags/$NEW_VERSION"; then
-                echo "⚠️ A tag $NEW_VERSION já existe (provavelmente de uma falha anterior). Incrementando novamente..."
+
+              if git show-ref --tags --verify --quiet "refs/tags/$NEW_VERSION" || npm view "$PACKAGE_NAME" version --registry "$NPM_REGISTRY" 2>/dev/null | grep -qx "${NEW_VERSION#v}"; then
+                echo "⚠️ A versão $NEW_VERSION já existe. Incrementando novamente..."
               else
                 echo "✅ Versão $NEW_VERSION disponível. Criando commit e tag..."
                 git commit -am "chore(release): ${NEW_VERSION#v} [skip ci]"
