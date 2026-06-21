@@ -108,10 +108,24 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_EXISTS=$(gh pr list --base develop --head main --state open --json number -q 'length')
+          git fetch origin develop main
+          MAIN_VERSION=$(jq -r .version package.json)
+          DEV_VERSION=$(git show origin/develop:package.json | jq -r .version)
+          VERSION_RELATION=$(bash ./scripts/compare-semver.sh "$MAIN_VERSION" "$DEV_VERSION")
 
-          if [ "$PR_EXISTS" -eq "0" ]; then
-            gh pr create --base develop --head main --title "🔄 chore: Sincronizar \`develop\` com \`main\` após release" --body "Sincronização automática pós-release para garantir que a \`develop\` esteja atualizada com a versão (e possível changelog) recém-publicada na \`main\`."
+          echo "Versão na main: $MAIN_VERSION"
+          echo "Versão na develop: $DEV_VERSION"
+
+          if [ "$VERSION_RELATION" = "gt" ]; then
+            PR_EXISTS=$(gh pr list --base develop --head main --state open --json number -q 'length')
+
+            if [ "$PR_EXISTS" -eq "0" ]; then
+              gh pr create --base develop --head main --title "🔄 chore: Sincronizar \`develop\` com \`main\` após release" --body "Sincronização automática pós-release para garantir que a \`develop\` esteja atualizada com a versão (e possível changelog) recém-publicada na \`main\`."
+            else
+              echo "Já existe um PR aberto para sincronizar a main com a develop."
+            fi
+          elif [ "$VERSION_RELATION" = "eq" ]; then
+            echo "A versão na main é igual à versão na develop. Nenhum PR de sincronização será aberto."
           else
-            echo "Já existe um PR aberto para sincronizar a main com a develop."
+            echo "A versão na main ($MAIN_VERSION) não é maior que a versão na develop ($DEV_VERSION). Nenhum PR de sincronização será aberto."
           fi

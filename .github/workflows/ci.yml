@@ -79,13 +79,13 @@ jobs:
           git fetch origin main
           MAIN_VERSION=$(git show origin/main:package.json | jq -r .version)
           DEV_VERSION=$(jq -r .version package.json)
+          VERSION_RELATION=$(bash ./scripts/compare-semver.sh "$DEV_VERSION" "$MAIN_VERSION")
 
           echo "Versão na main: $MAIN_VERSION"
           echo "Versão na develop: $DEV_VERSION"
 
-          # sort -V ordena as versões. Se MAIN_VERSION for a menor (ou igual), então DEV_VERSION >= MAIN_VERSION
-          if [ "$(printf '%s\n' "$MAIN_VERSION" "$DEV_VERSION" | sort -V | head -n1)" = "$MAIN_VERSION" ]; then
-            # Verifica se existem modificações reais na develop em relação ao que já está na main
+          # Só promove develop -> main quando a develop estiver com versão maior que a main.
+          if [ "$VERSION_RELATION" = "gt" ]; then
             CHANGED_FILES=$(git diff origin/main...HEAD --name-only)
             
             if [ -z "$CHANGED_FILES" ]; then
@@ -99,8 +99,10 @@ jobs:
                 echo "Já existe um Pull Request aberto de develop para main. Nenhuma ação adicional necessária."
               fi
             fi
+          elif [ "$VERSION_RELATION" = "eq" ]; then
+            echo "A versão na develop é igual à versão na main. Não será aberto um Pull Request automático para evitar loop de sincronização."
           else
-            echo "A versão na develop ($DEV_VERSION) é menor que a versão na main ($MAIN_VERSION). Não será aberto um Pull Request automático."
+            echo "A versão na develop ($DEV_VERSION) não é maior que a versão na main ($MAIN_VERSION). Não será aberto um Pull Request automático."
           fi
 
   terraform:
