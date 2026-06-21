@@ -61,7 +61,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
-    "@typescript-eslint/parser": "^8.59.4",
+    "@typescript-eslint/parser": "^8.61.1",
     "commitlint": "^21.0.2",
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
