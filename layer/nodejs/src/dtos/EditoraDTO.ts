@@ -1,3 +1,5 @@
+import { LivroDTO } from './LivroDTO';
+
 export class EditoraDTO {
   id?: string;
   nome: string;
@@ -5,6 +7,7 @@ export class EditoraDTO {
   website?: string;
   pais?: string;
   logoUrl?: string;
+  livros?: LivroDTO[];
 
   constructor(data: object) {
     this.id = Object.getOwnPropertyDescriptor(data, 'id')?.value ?? undefined;
@@ -13,6 +16,7 @@ export class EditoraDTO {
     this.website = Object.getOwnPropertyDescriptor(data, 'website')?.value ?? undefined;
     this.pais = Object.getOwnPropertyDescriptor(data, 'pais')?.value ?? undefined;
     this.logoUrl = Object.getOwnPropertyDescriptor(data, 'logoUrl')?.value ?? undefined;
+    this.livros = Object.getOwnPropertyDescriptor(data, 'livros')?.value ?? undefined;
   }
 
   toJSONString(): string {
