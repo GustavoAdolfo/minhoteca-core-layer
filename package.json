@@ -59,7 +59,7 @@
     "@commitlint/cli": "^21.0.1",
     "@commitlint/config-conventional": "^21.2.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^26.0.0",
+    "@types/node": "^26.1.0",
     "@typescript-eslint/eslint-plugin": "^8.62.0",
     "@typescript-eslint/parser": "^8.59.4",
     "commitlint": "^21.2.0",
