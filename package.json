@@ -67,7 +67,7 @@
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "lint-staged": "^17.0.8",
-    "prettier": "^3.8.4",
+    "prettier": "^3.9.4",
     "ts-jest": "^29.4.11",
     "tsc-alias": "^1.8.17",
     "typescript": "^6.0.3"
