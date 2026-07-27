@@ -11,11 +11,11 @@ export class PaisAdapter {
    */
   static toDTO(pais: Pais): PaisDTO {
     return new PaisDTO({
-      nome: pais.getNome().toString(),
-      nomePortugues: pais.getNomePortugues().toString(),
-      bandeira: pais.getBandeira()?.toString(),
+      nome: pais.getNome(),
+      nomePortugues: pais.getNomePortugues(),
+      bandeira: pais.getBandeira(),
       isoAlpha3: pais.getIsoAlpha3(),
-      isoAlpha2: pais.getIsoAlpha2()?.toString(),
+      isoAlpha2: pais.getIsoAlpha2(),
       isoNumeric: pais.getIsoNumeric(),
     });
   }
