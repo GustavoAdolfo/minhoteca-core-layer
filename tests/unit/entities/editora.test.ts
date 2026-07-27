@@ -3,6 +3,18 @@ import { Entity } from '../../../layer/nodejs/src/entities/Entity';
 import { EditoraInterface } from '../../../layer/nodejs/src/interfaces/editora.interface';
 
 describe('Editora Entity', () => {
+  it('deve criar editora com id informado', () => {
+    const editora = Editora.create(
+      {
+        nome: 'Editora Com ID',
+        email: 'contato@editora.com',
+      } as unknown as EditoraInterface,
+      'editora-id-custom'
+    );
+
+    expect(editora.getId()).toBe('editora-id-custom');
+  });
+
   it('deve criar uma nova editora', () => {
     const editoraProps = {
       nome: 'Editora Exemplo',
@@ -346,5 +358,62 @@ describe('Editora Entity', () => {
 
     expect(editora.getEmail()).toBe('original@email.com');
     expect(editora.getNome().toString()).toBe('Editora Atualizada');
+  });
+
+  it('deve remover o email da editora', () => {
+    const editora = Editora.create({
+      nome: 'Editora Com Email',
+      email: 'contato@editora.com',
+      pais: 'Brasil',
+    } as unknown as EditoraInterface);
+
+    editora.removeEmail();
+
+    expect(editora.getEmail()).toBeUndefined();
+  });
+
+  it('deve lançar erro ao validar propriedades sem nome', () => {
+    const validarPropriedades = (
+      Editora as unknown as {
+        validarPropriedades: (props: Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>) => void;
+      }
+    ).validarPropriedades;
+
+    expect(() =>
+      validarPropriedades({
+        nome: '',
+        email: 'contato@editora.com',
+      } as unknown as Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>)
+    ).toThrow('Nome da editora inválido');
+  });
+
+  it('deve lançar erro ao validar propriedades sem email', () => {
+    const validarPropriedades = (
+      Editora as unknown as {
+        validarPropriedades: (props: Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>) => void;
+      }
+    ).validarPropriedades;
+
+    expect(() =>
+      validarPropriedades({
+        nome: 'Editora Sem Email',
+        email: '',
+      } as unknown as Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>)
+    ).toThrow('Email da editora inválido');
+  });
+
+  it('não deve lançar erro ao validar propriedades válidas', () => {
+    const validarPropriedades = (
+      Editora as unknown as {
+        validarPropriedades: (props: Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>) => void;
+      }
+    ).validarPropriedades;
+
+    expect(() =>
+      validarPropriedades({
+        nome: 'Editora Valida',
+        email: 'contato@editora.com',
+      } as unknown as Omit<EditoraInterface, 'criadoEm' | 'atualizadoEm'>)
+    ).not.toThrow();
   });
 });
