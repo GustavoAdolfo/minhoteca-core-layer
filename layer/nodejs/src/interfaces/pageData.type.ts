@@ -1,7 +1,8 @@
 import { AutorDTO, PaisDTO, LivroDTO, EditoraDTO } from '../dtos';
 
 export interface PageDataType {
-  PageData?: AutorDTO[] | LivroDTO[] | PaisDTO[] | EditoraDTO[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  PageData?: AutorDTO[] | LivroDTO[] | PaisDTO[] | EditoraDTO[] | any;
   Items: number;
   TotalItems: number;
   TotalPage: number;
