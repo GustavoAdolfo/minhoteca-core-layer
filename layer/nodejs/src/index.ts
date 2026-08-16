@@ -11,12 +11,14 @@ export { Autor } from './entities/Autor';
 export { Editora } from './entities/Editora';
 export { Livro } from './entities/Livro';
 export { Pais } from './entities/Pais';
+export { Emprestimo } from './entities/Emprestimo';
 
 // DTOs
 export type { AutorDTO } from './dtos/AutorDTO';
 export type { EditoraDTO } from './dtos/EditoraDTO';
 export type { LivroDTO } from './dtos/LivroDTO';
 export type { PaisDTO } from './dtos/PaisDTO';
+export type { EmprestimoDTO } from './dtos/EmprestimoDTO';
 
 // Adapters
 export { AutorAdapter } from './adapters/AutorAdapter';
