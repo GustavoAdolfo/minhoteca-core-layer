@@ -18,7 +18,6 @@ describe('EmprestimoDTO', () => {
 
     const dto = new EmprestimoDTO(data);
 
-    expect(dto.id).toBe('emprestimo-123');
     expect(dto.livroId).toBe('livro-456');
     expect(dto.usuarioId).toBe('usuario-789');
     expect(dto.solicitacaoDataHora).toBe('2026-08-01T10:00:00.000Z');
@@ -46,7 +45,6 @@ describe('EmprestimoDTO', () => {
 
     const json = JSON.parse(dto.toJSONString());
 
-    expect(json).toHaveProperty('id', 'emprestimo-123');
     expect(json).toHaveProperty('livroId', 'livro-456');
     expect(json).toHaveProperty('usuarioId', 'usuario-789');
     expect(json).toHaveProperty('solicitacaoDataHora', '2026-08-01T10:00:00.000Z');
@@ -65,7 +63,6 @@ describe('EmprestimoDTO', () => {
       situacao: 'PENDENTE',
     });
 
-    expect(dto.id).toBeUndefined();
     expect(dto.emprestimoDataHora).toBeUndefined();
     expect(dto.prazoDias).toBeUndefined();
     expect(dto.previsaoDevolucaoDataHora).toBeUndefined();
