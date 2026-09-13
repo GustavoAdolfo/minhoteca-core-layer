@@ -146,3 +146,4 @@ vite.config.ts.timestamp-*
 .npmrc
 .vscode/settings.json
 layer/nodejs/package-lock.json
+terraform/envs/local/
