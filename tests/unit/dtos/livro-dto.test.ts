@@ -2,6 +2,30 @@ import { AutorDTO, EditoraDTO, LivroDTO } from '../../../layer/nodejs/src/dtos';
 import { StatusLivro } from '../../../layer/nodejs/src/enums';
 
 describe('LivroDTO', () => {
+  it('usa os mesmos valores de situação aceitos pelo formulário', () => {
+    expect(Object.values(StatusLivro)).toEqual([
+      'PENDENTE',
+      'EMPRESTADO',
+      'DEVOLVIDO',
+      'ATRASADO',
+      'CANCELADO',
+      'REVISAR',
+      'DISPONIVEL',
+    ]);
+  });
+
+  it('converte o status legado para uma situação válida ao recuperar um livro', () => {
+    const livroDTO = new LivroDTO({
+      titulo: 'Livro emprestado',
+      autorId: 'autor-123',
+      status: 'EMPRESTADO',
+    });
+
+    expect(livroDTO.situacao).toBe(StatusLivro.EMPRESTADO);
+    expect(JSON.parse(livroDTO.toJSONString())).toHaveProperty('situacao', StatusLivro.EMPRESTADO);
+    expect(JSON.parse(livroDTO.toJSONString())).not.toHaveProperty('status');
+  });
+
   it('deve converter LivroDTO para um json válido', () => {
     const livroDTO = new LivroDTO({
       titulo: 'Título do Livro',
@@ -11,7 +35,7 @@ describe('LivroDTO', () => {
       editoraId: 'qqwersadfasd',
       anoPublicacao: 2020,
       sinopse: 'Uma breve sinopse do livro.',
-      status: StatusLivro.DISPONIVEL,
+      situacao: StatusLivro.DISPONIVEL,
       localizacao: 'Estante B-2',
       revisar: false,
       criadoEm: '2024-06-01T12:00:00Z',
@@ -27,7 +51,7 @@ describe('LivroDTO', () => {
     expect(content).toHaveProperty('isbn', '978-3-16-148410-0');
     expect(content).toHaveProperty('editoraId', 'qqwersadfasd');
     expect(content).toHaveProperty('anoPublicacao', 2020);
-    expect(content).toHaveProperty('status', StatusLivro.DISPONIVEL);
+    expect(content).toHaveProperty('situacao', StatusLivro.DISPONIVEL);
     expect(content).toHaveProperty('sinopse', 'Uma breve sinopse do livro.');
     expect(content).toHaveProperty('revisar', false);
   });
@@ -40,7 +64,7 @@ describe('LivroDTO', () => {
       isbn: '978-3-16-148410-0',
       editoraId: 'qqwersadfasd',
       anoPublicacao: 2020,
-      status: StatusLivro.DISPONIVEL,
+      situacao: StatusLivro.DISPONIVEL,
     });
 
     const json = livroDTO.toJSONString();
@@ -52,7 +76,7 @@ describe('LivroDTO', () => {
     expect(content).toHaveProperty('isbn', '978-3-16-148410-0');
     expect(content).toHaveProperty('editoraId', 'qqwersadfasd');
     expect(content).toHaveProperty('anoPublicacao', 2020);
-    expect(content).toHaveProperty('status', StatusLivro.DISPONIVEL);
+    expect(content).toHaveProperty('situacao', StatusLivro.DISPONIVEL);
     expect(content).not.toHaveProperty('sinopse');
     expect(content).not.toHaveProperty('localizacao');
     expect(content).not.toHaveProperty('revisar');
@@ -66,7 +90,7 @@ describe('LivroDTO', () => {
       isbn: '978-3-16-148410-0',
       editoraId: 'qqwersadfasd',
       anoPublicacao: 2020,
-      status: StatusLivro.DISPONIVEL,
+      situacao: StatusLivro.DISPONIVEL,
       autor: new AutorDTO({ id: 'autor-123', nome: 'Nome do Autor' }),
       editora: new EditoraDTO({ id: 'qqwersadfasd', nome: 'Nome da Editora' }),
     };
@@ -80,6 +104,6 @@ describe('LivroDTO', () => {
     expect(livroDTO.isbn).toBe('978-3-16-148410-0');
     expect(livroDTO.editoraId).toBe('qqwersadfasd');
     expect(livroDTO.anoPublicacao).toBe(2020);
-    expect(livroDTO.status).toBe(StatusLivro.DISPONIVEL);
+    expect(livroDTO.situacao).toBe(StatusLivro.DISPONIVEL);
   });
 });

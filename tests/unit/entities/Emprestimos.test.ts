@@ -11,7 +11,7 @@ const defaultProps = (): EmprestimoInterface => ({
   previsaoDevolucaoDataHora: '2026-08-15T10:30:00.000Z',
   devolucaoDataHora: undefined,
   renovacaoDataHora: undefined,
-  situacao: 'ATIVO',
+  situacao: 'EMPRESTADO',
   observacao: 'Empréstimo normal',
 });
 

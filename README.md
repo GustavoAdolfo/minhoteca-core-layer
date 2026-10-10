@@ -62,7 +62,7 @@ const livro = Livro.create({
   editoraId: 'editora-456',
   anoPublicacao: 1988,
   dataAquisicao: new Data('2024-01-15'),
-  status: StatusLivro.DISPONIVEL,
+  situacao: StatusLivro.DISPONIVEL,
 });
 
 // Emprestar livro
