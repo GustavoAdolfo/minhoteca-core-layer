@@ -13,7 +13,7 @@ describe('LivroAdapter', () => {
     editoraId: 'editora-456',
     anoPublicacao: 1954,
     sinopse: 'Uma épica jornada pela Terra Média',
-    status: StatusLivro.DISPONIVEL,
+    situacao: StatusLivro.DISPONIVEL,
     localizacao: 'Estante A-10',
     criadoEm: new Date('2024-01-01T10:00:00Z'),
     atualizadoEm: new Date('2024-01-02T15:30:00Z'),
@@ -32,7 +32,7 @@ describe('LivroAdapter', () => {
         editoraId: 'editora-456',
         anoPublicacao: 1954,
         sinopse: 'Uma épica jornada pela Terra Média',
-        status: StatusLivro.DISPONIVEL,
+        situacao: StatusLivro.DISPONIVEL,
         localizacao: 'Estante A-10',
         isbn: '9780545010221',
       });
@@ -59,11 +59,11 @@ describe('LivroAdapter', () => {
       expect(props.editoraId).toBe('editora-888');
       expect(props.anoPublicacao).toBe(1997);
       expect(props.sinopse).toBe('O menino que sobreviveu');
-      expect(props.status).toBe(StatusLivro.DISPONIVEL);
+      expect(props.situacao).toBe(StatusLivro.DISPONIVEL);
       expect(props.localizacao).toBe('Estante B-05');
     });
 
-    it('deve usar status fornecido no DTO', () => {
+    it('deve usar situação fornecida no DTO', () => {
       const createDTO = new LivroDTO({
         titulo: 'Livro Emprestado',
         isbn: '978-1-234-56789-0',
@@ -71,13 +71,13 @@ describe('LivroAdapter', () => {
         editoraId: 'editora-222',
         anoPublicacao: 2020,
         sinopse: 'Descrição',
-        status: StatusLivro.EMPRESTADO,
+        situacao: StatusLivro.EMPRESTADO,
         localizacao: 'Estante C-01',
       });
 
       const props = LivroAdapter.fromCreateDTO(createDTO);
 
-      expect(props.status).toBe(StatusLivro.EMPRESTADO);
+      expect(props.situacao).toBe(StatusLivro.EMPRESTADO);
     });
   });
 
