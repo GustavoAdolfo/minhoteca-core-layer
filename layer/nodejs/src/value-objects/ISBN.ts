@@ -7,10 +7,22 @@ import { ValueObject } from '../value-objects/ValueObject';
 export class ISBN extends ValueObject {
   private readonly value: string;
 
-  constructor(value: string | undefined) {
+  constructor(value: unknown) {
     super();
+    if (value instanceof ISBN) {
+      value = value.toPrimitive();
+    } else if (typeof value === 'object' && value !== null && 'value' in value) {
+      value = value.value;
+    }
+
     if (value === undefined) {
       throw new Error('ISBN é obrigatório');
+    }
+    if (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0) {
+      value = String(value);
+    }
+    if (typeof value !== 'string') {
+      throw new TypeError('Tipo ou valor de ISBN inválido.');
     }
     this.validate(value);
     this.value = value.replace(/[^0-9X]/g, '').toUpperCase();
