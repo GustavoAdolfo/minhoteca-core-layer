@@ -11,7 +11,7 @@ export interface LivroInterface {
   anoPublicacao?: number;
   paginas?: number;
   sinopse?: string;
-  status: StatusLivro;
+  situacao: StatusLivro;
   localizacao?: string;
   revisar?: boolean;
   criadoEm?: Date;

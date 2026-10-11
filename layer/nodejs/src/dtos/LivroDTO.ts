@@ -2,6 +2,26 @@ import { StatusLivro } from '../enums';
 import { AutorDTO } from './AutorDTO';
 import { EditoraDTO } from './EditoraDTO';
 
+const situacaoFromData = (data: object): StatusLivro => {
+  const situacao = Object.getOwnPropertyDescriptor(data, 'situacao')?.value;
+  if (Object.values(StatusLivro).some((value) => value === situacao)) {
+    return situacao as StatusLivro;
+  }
+
+  const statusLegado = Object.getOwnPropertyDescriptor(data, 'status')?.value;
+  switch (statusLegado) {
+    case 'EMPRESTADO':
+      return StatusLivro.EMPRESTADO;
+    case 'DANIFICADO':
+    case 'REVISAO':
+      return StatusLivro.REVISAR;
+    case 'DESCARTADO':
+      return StatusLivro.CANCELADO;
+    default:
+      return StatusLivro.DISPONIVEL;
+  }
+};
+
 export class LivroDTO {
   id?: string;
   titulo: string;
@@ -12,7 +32,7 @@ export class LivroDTO {
   anoPublicacao?: number;
   paginas?: number;
   sinopse?: string;
-  status: StatusLivro;
+  situacao: StatusLivro;
   localizacao?: string;
   revisar?: boolean;
   autor?: AutorDTO;
@@ -27,24 +47,18 @@ export class LivroDTO {
     this.id = Object.getOwnPropertyDescriptor(data, 'id')?.value as string | undefined;
     this.titulo = Object.getOwnPropertyDescriptor(data, 'titulo')?.value as string | '';
     this.subtitulo = Object.getOwnPropertyDescriptor(data, 'subtitulo')?.value as
-      | string
-      | undefined;
+      string | undefined;
     this.autorId = Object.getOwnPropertyDescriptor(data, 'autorId')?.value as string | '';
     this.editoraId = Object.getOwnPropertyDescriptor(data, 'editoraId')?.value as
-      | string
-      | undefined;
+      string | undefined;
     this.isbn = Object.getOwnPropertyDescriptor(data, 'isbn')?.value as string | undefined;
     this.anoPublicacao = Object.getOwnPropertyDescriptor(data, 'anoPublicacao')?.value as
-      | number
-      | undefined;
+      number | undefined;
     this.paginas = Object.getOwnPropertyDescriptor(data, 'paginas')?.value as number | undefined;
     this.sinopse = Object.getOwnPropertyDescriptor(data, 'sinopse')?.value as string | undefined;
-    this.status = Object.getOwnPropertyDescriptor(data, 'status')?.value as
-      | StatusLivro
-      | StatusLivro.REVISAO;
+    this.situacao = situacaoFromData(data);
     this.localizacao = Object.getOwnPropertyDescriptor(data, 'localizacao')?.value as
-      | string
-      | undefined;
+      string | undefined;
     this.revisar = Object.getOwnPropertyDescriptor(data, 'revisar')?.value as boolean | true;
     this.autor = Object.getOwnPropertyDescriptor(data, 'autor')
       ? new AutorDTO(Object.getOwnPropertyDescriptor(data, 'autor')?.value as object)
@@ -58,11 +72,9 @@ export class LivroDTO {
     //   | undefined;
     this.idioma = Object.getOwnPropertyDescriptor(data, 'idioma')?.value as string | undefined;
     this.imagemCapaUrl = Object.getOwnPropertyDescriptor(data, 'imagemCapaUrl')?.value as
-      | string
-      | undefined;
+      string | undefined;
     this.imagemCapaMiniUrl = Object.getOwnPropertyDescriptor(data, 'imagemCapaMiniUrl')?.value as
-      | string
-      | undefined;
+      string | undefined;
   }
 
   toJSONString(): string {
@@ -76,7 +88,7 @@ export class LivroDTO {
       anoPublicacao: this.anoPublicacao,
       paginas: this.paginas,
       sinopse: this.sinopse,
-      status: this.status,
+      situacao: this.situacao,
       localizacao: this.localizacao,
       revisar: this.revisar,
       autor: this.autor,

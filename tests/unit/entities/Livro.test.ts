@@ -15,7 +15,7 @@ describe('Livro Entity', () => {
       editoraId: 'editora-123',
       anoPublicacao: 1988,
       revisar: false,
-      status: StatusLivro.DISPONIVEL,
+      situacao: StatusLivro.DISPONIVEL,
     }) as unknown as LivroInterface;
 
   it('deve criar um novo livro', () => {
@@ -25,7 +25,7 @@ describe('Livro Entity', () => {
     expect(livro.getId()).toBeDefined();
     expect(livro.getTitulo()?.toString()).toBe('O Alquimista');
     expect(livro.getISBN().toString()).toBe('9788506084405');
-    expect(livro.getStatus()).toBe(StatusLivro.DISPONIVEL);
+    expect(livro.getSituacao()).toBe(StatusLivro.DISPONIVEL);
   });
 
   it('deve validar ano de publicação', () => {
@@ -44,7 +44,7 @@ describe('Livro Entity', () => {
 
     livro.emprestar();
 
-    expect(livro.getStatus()).toBe(StatusLivro.EMPRESTADO);
+    expect(livro.getSituacao()).toBe(StatusLivro.EMPRESTADO);
   });
 
   it('não deve emprestar um livro já emprestado', () => {
@@ -62,7 +62,7 @@ describe('Livro Entity', () => {
     livro.emprestar();
     livro.devolver();
 
-    expect(livro.getStatus()).toBe(StatusLivro.DISPONIVEL);
+    expect(livro.getSituacao()).toBe(StatusLivro.DISPONIVEL);
   });
 
   it('não deve devolver um livro que não está emprestado', () => {
@@ -78,7 +78,7 @@ describe('Livro Entity', () => {
 
     livro.marcarComoDanificado();
 
-    expect(livro.getStatus()).toBe(StatusLivro.DANIFICADO);
+    expect(livro.getSituacao()).toBe(StatusLivro.REVISAR);
   });
 
   it('deve descartar um livro', () => {
@@ -87,7 +87,7 @@ describe('Livro Entity', () => {
 
     livro.descartar();
 
-    expect(livro.getStatus()).toBe(StatusLivro.DESCARTADO);
+    expect(livro.getSituacao()).toBe(StatusLivro.CANCELADO);
   });
 
   it('deve verificar se livro está disponível', () => {
@@ -121,6 +121,7 @@ describe('Livro Entity', () => {
 
     expect(livro.getId()).toBe('livro-123');
     expect(livro.getTitulo()?.toString()).toBe('O Alquimista');
+    expect(livro.getSituacao()).toBe(StatusLivro.DISPONIVEL);
   });
 
   it('deve atualizar timestamp ao fazer operações', () => {
@@ -147,7 +148,7 @@ describe('Livro Entity', () => {
     expect(content).toHaveProperty('autorId', 'autor-123');
     expect(content).toHaveProperty('editoraId', 'editora-123');
     expect(content).toHaveProperty('anoPublicacao', 1988);
-    expect(content).toHaveProperty('status', StatusLivro.DISPONIVEL);
+    expect(content).toHaveProperty('situacao', StatusLivro.DISPONIVEL);
   });
 
   it('deve lançar erro ao criar livro sem título', () => {
@@ -165,7 +166,7 @@ describe('Livro Entity', () => {
       anoPublicacao: 1899,
     } as unknown as LivroInterface);
 
-    expect(livro.getStatus()).toBe(StatusLivro.REVISAO);
+    expect(livro.getSituacao()).toBe(StatusLivro.DISPONIVEL);
     expect(livro.getLocalizacao()).toBeUndefined();
     expect(livro.getRevisar()).toBe(true);
     expect(livro.getIdioma()).toBeUndefined();
@@ -258,13 +259,13 @@ describe('Livro Entity', () => {
 
   it('deve retornar estado de revisão', () => {
     const props = criarLivroProps();
-    const livro = Livro.create({ ...props, revisar: true, status: StatusLivro.REVISAO });
+    const livro = Livro.create({ ...props, revisar: true, situacao: StatusLivro.REVISAR });
 
-    expect(livro.getStatus()).toBe(StatusLivro.REVISAO);
+    expect(livro.getSituacao()).toBe(StatusLivro.REVISAR);
     expect(livro.sobRevisao()).toBe(true);
 
-    const livro2 = Livro.create({ ...props, revisar: true, status: StatusLivro.DANIFICADO });
-    expect(livro2.getStatus()).toBe(StatusLivro.DANIFICADO);
+    const livro2 = Livro.create({ ...props, revisar: true, situacao: StatusLivro.CANCELADO });
+    expect(livro2.getSituacao()).toBe(StatusLivro.CANCELADO);
     expect(livro2.sobRevisao()).toBe(true);
   });
 
@@ -272,7 +273,7 @@ describe('Livro Entity', () => {
     const props = criarLivroProps();
     const livro = Livro.create(props);
     livro.marcarParaRevisao();
-    expect(livro.getStatus()).toBe(StatusLivro.REVISAO);
+    expect(livro.getSituacao()).toBe(StatusLivro.REVISAR);
     expect(livro.sobRevisao()).toBe(true);
   });
 
@@ -282,7 +283,7 @@ describe('Livro Entity', () => {
     livro.marcarParaRevisao();
     livro.removerDaRevisao();
 
-    expect(livro.getStatus()).toBe(StatusLivro.DISPONIVEL);
+    expect(livro.getSituacao()).toBe(StatusLivro.DISPONIVEL);
   });
 
   describe('Timestamps initialization (criadoEm and atualizadoEm)', () => {

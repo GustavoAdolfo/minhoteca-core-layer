@@ -21,7 +21,7 @@ export class Livro extends Entity {
   anoPublicacao?: number;
   paginas: number;
   sinopse: string | undefined;
-  status: StatusLivro;
+  situacao: StatusLivro;
   localizacao: string | undefined;
   revisar: boolean | undefined;
   idioma: string | undefined;
@@ -42,7 +42,7 @@ export class Livro extends Entity {
     this.anoPublicacao = props.anoPublicacao;
     this.paginas = props.paginas ?? 0;
     this.sinopse = props.sinopse;
-    this.status = props.status ?? StatusLivro.REVISAO;
+    this.situacao = props.situacao ?? StatusLivro.DISPONIVEL;
     this.localizacao = props.localizacao;
     this.revisar = props.revisar ?? true;
     this.idioma = props.idioma;
@@ -141,8 +141,8 @@ export class Livro extends Entity {
     return this.sinopse;
   }
 
-  getStatus(): StatusLivro {
-    return this.status;
+  getSituacao(): StatusLivro {
+    return this.situacao;
   }
 
   getLocalizacao(): string | undefined {
@@ -176,10 +176,10 @@ export class Livro extends Entity {
    * Marca o livro como emprestado
    */
   emprestar(): void {
-    if (this.status !== StatusLivro.DISPONIVEL) {
-      throw new LivroInvalidoError(`Não é possível emprestar livro com status ${this.status}`);
+    if (this.situacao !== StatusLivro.DISPONIVEL) {
+      throw new LivroInvalidoError(`Não é possível emprestar livro com situação ${this.situacao}`);
     }
-    this.status = StatusLivro.EMPRESTADO;
+    this.situacao = StatusLivro.EMPRESTADO;
     this.atualizadoEm = new Date();
   }
 
@@ -187,10 +187,10 @@ export class Livro extends Entity {
    * Marca o livro como devolvido (retorna ao status DISPONIVEL)
    */
   devolver(): void {
-    if (this.status !== StatusLivro.EMPRESTADO) {
-      throw new LivroInvalidoError(`Não é possível devolver livro com status ${this.status}`);
+    if (this.situacao !== StatusLivro.EMPRESTADO) {
+      throw new LivroInvalidoError(`Não é possível devolver livro com situação ${this.situacao}`);
     }
-    this.status = StatusLivro.DISPONIVEL;
+    this.situacao = StatusLivro.DISPONIVEL;
     this.atualizadoEm = new Date();
   }
 
@@ -198,7 +198,7 @@ export class Livro extends Entity {
    * Marca o livro como danificado
    */
   marcarComoDanificado(): void {
-    this.status = StatusLivro.DANIFICADO;
+    this.situacao = StatusLivro.REVISAR;
     this.atualizadoEm = new Date();
   }
 
@@ -206,7 +206,7 @@ export class Livro extends Entity {
    * Marca o livro como descartado
    */
   descartar(): void {
-    this.status = StatusLivro.DESCARTADO;
+    this.situacao = StatusLivro.CANCELADO;
     this.atualizadoEm = new Date();
   }
 
@@ -214,22 +214,22 @@ export class Livro extends Entity {
    * Verifica se o livro está disponível para empréstimo
    */
   disponivel(): boolean {
-    return this.status === StatusLivro.DISPONIVEL && this.revisar !== true;
+    return this.situacao === StatusLivro.DISPONIVEL && this.revisar !== true;
   }
 
   sobRevisao(): boolean {
-    return this.status === StatusLivro.REVISAO || this.revisar === true;
+    return this.situacao === StatusLivro.REVISAR || this.revisar === true;
   }
 
   marcarParaRevisao(): void {
     this.revisar = true;
-    this.status = StatusLivro.REVISAO;
+    this.situacao = StatusLivro.REVISAR;
     this.atualizadoEm = new Date();
   }
 
   removerDaRevisao(): void {
     this.revisar = false;
-    this.status = StatusLivro.DISPONIVEL;
+    this.situacao = StatusLivro.DISPONIVEL;
     this.atualizadoEm = new Date();
   }
 
@@ -250,7 +250,7 @@ export class Livro extends Entity {
       autorId: this.getAutorId(),
       editoraId: this.getEditoraId(),
       anoPublicacao: this.getAnoPublicacao(),
-      status: this.getStatus(),
+      situacao: this.getSituacao(),
       localizacao: this.getLocalizacao(),
       criadoEm: this.getCriadoEm(),
       atualizadoEm: this.getAtualizadoEm(),
@@ -272,7 +272,7 @@ export class Livro extends Entity {
       this.anoPublicacao === entity.anoPublicacao &&
       this.paginas === entity.paginas &&
       this.sinopse === entity.sinopse &&
-      this.status === entity.status &&
+      this.situacao === entity.situacao &&
       this.localizacao === entity.localizacao &&
       this.revisar === entity.revisar &&
       this.idioma === entity.idioma &&

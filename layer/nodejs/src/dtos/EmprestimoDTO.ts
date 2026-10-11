@@ -7,7 +7,7 @@ export class EmprestimoDTO {
   previsaoDevolucaoDataHora?: string;
   devolucaoDataHora?: string;
   renovacaoDataHora?: string;
-  situacao: 'PENDENTE' | 'ATIVO' | 'DEVOLVIDO' | 'ATRASADO' | 'CANCELADO';
+  situacao: 'PENDENTE' | 'EMPRESTADO' | 'DEVOLVIDO' | 'ATRASADO' | 'CANCELADO';
   observacao?: string;
 
   constructor(data: object) {
@@ -28,7 +28,7 @@ export class EmprestimoDTO {
     this.renovacaoDataHora = Object.getOwnPropertyDescriptor(data, 'renovacaoDataHora')?.value as
       string | undefined;
     this.situacao = Object.getOwnPropertyDescriptor(data, 'situacao')?.value as
-      'PENDENTE' | 'ATIVO' | 'DEVOLVIDO' | 'ATRASADO' | 'CANCELADO';
+      'PENDENTE' | 'EMPRESTADO' | 'DEVOLVIDO' | 'ATRASADO' | 'CANCELADO';
     this.observacao = Object.getOwnPropertyDescriptor(data, 'observacao')?.value as
       string | undefined;
   }
