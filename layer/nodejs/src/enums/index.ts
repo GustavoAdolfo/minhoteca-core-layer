@@ -7,3 +7,11 @@ export enum StatusLivro {
   REVISAR = 'REVISAR',
   DISPONIVEL = 'DISPONIVEL',
 }
+
+export enum ListaClassificacaoTipo {
+  OURO = 'OURO',
+  PRATA = 'PRATA',
+  BRONZE = 'BRONZE',
+  LARANJA = 'LARANJA',
+  VERMELHA = 'VERMELHA',
+}
