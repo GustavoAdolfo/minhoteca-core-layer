@@ -5,3 +5,4 @@ export * from './use-case.interface';
 export * from './pais.interface';
 export * from './pageData.type';
 export * from './emprestimo.interface';
+export * from './lista-classificacao.interface';
