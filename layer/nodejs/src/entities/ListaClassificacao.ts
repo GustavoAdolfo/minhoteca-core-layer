@@ -9,11 +9,11 @@ export class ListaClassificacao {
   tipo: ListaClassificacaoTipo;
   idUsuario: string;
   dataInclusao: Date;
-  dataRemocao: Date;
+  dataRemocao: Date | null;
   motivoInclusao: string;
-  motivoRemocao: string;
-  observacoes: string;
-  dataObservacoes: Date;
+  motivoRemocao: string | null;
+  observacoes: string | null;
+  dataObservacoes: Date | null;
 
   private constructor(props: ListaClassificacaoProps) {
     this.tipo = props.tipo;
@@ -38,6 +38,8 @@ export class ListaClassificacao {
   public registrarInclusao(motivoInclusao: string): void {
     this.motivoInclusao = motivoInclusao;
     this.dataInclusao = new Date();
+    this.motivoRemocao = null;
+    this.dataRemocao = null;
   }
 
   public atualizarObservacoes(observacoes: string): void {

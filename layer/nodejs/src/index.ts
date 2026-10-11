@@ -35,8 +35,9 @@ export {
   PaisInvalidoError,
 } from './errors/DomainErrors';
 
-export { StatusLivro } from './enums';
+export { ListaClassificacaoTipo, StatusLivro } from './enums';
 
 export * from './interfaces';
+export { ListaClassificacao } from './entities/ListaClassificacao';
 
 export * from './services';

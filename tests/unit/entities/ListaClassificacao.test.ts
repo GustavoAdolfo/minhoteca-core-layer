@@ -8,11 +8,11 @@ const createProps = (
   tipo: ListaClassificacaoTipo.LARANJA,
   idUsuario: 'usuario-123',
   dataInclusao: new Date('2025-01-01T10:00:00.000Z'),
-  dataRemocao: new Date('2025-02-01T10:00:00.000Z'),
+  dataRemocao: null,
   motivoInclusao: 'Motivo da inclusão',
-  motivoRemocao: 'Motivo da remoção',
-  observacoes: 'Observação existente',
-  dataObservacoes: new Date('2025-03-01T10:00:00.000Z'),
+  motivoRemocao: null,
+  observacoes: null,
+  dataObservacoes: null,
   ...overrides,
 });
 
@@ -46,8 +46,8 @@ describe('ListaClassificacao', () => {
     expect(listaClassificacao).toMatchObject({
       tipo: props.tipo,
       idUsuario: props.idUsuario,
-      dataRemocao: props.dataRemocao,
-      motivoRemocao: props.motivoRemocao,
+      dataRemocao: null,
+      motivoRemocao: null,
       observacoes: props.observacoes,
       dataObservacoes: props.dataObservacoes,
     });
@@ -93,7 +93,7 @@ describe('ListaClassificacao', () => {
     });
   });
 
-  it('permite remover e reinserir uma classificação, usando a data de cada operação', () => {
+  it('permite remover e reinserir uma classificação, limpando os dados da remoção', () => {
     const removalDate = new Date('2025-04-04T10:00:00.000Z');
     const inclusionDate = new Date('2025-04-05T10:00:00.000Z');
     jest.useFakeTimers().setSystemTime(removalDate);
@@ -103,8 +103,8 @@ describe('ListaClassificacao', () => {
     jest.setSystemTime(inclusionDate);
     listaClassificacao.registrarInclusao('Motivo de reinclusão');
 
-    expect(listaClassificacao.motivoRemocao).toBe('Motivo de remoção');
-    expect(listaClassificacao.dataRemocao).toEqual(removalDate);
+    expect(listaClassificacao.motivoRemocao).toBeNull();
+    expect(listaClassificacao.dataRemocao).toBeNull();
     expect(listaClassificacao.motivoInclusao).toBe('Motivo de reinclusão');
     expect(listaClassificacao.dataInclusao).toEqual(inclusionDate);
   });

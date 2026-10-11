@@ -4,9 +4,9 @@ export interface ListaClassificacaoProps {
   tipo: ListaClassificacaoTipo;
   idUsuario: string;
   dataInclusao: Date;
-  dataRemocao: Date;
+  dataRemocao?: Date | null;
   motivoInclusao: string;
-  motivoRemocao: string;
-  observacoes: string;
-  dataObservacoes: Date;
+  motivoRemocao?: string | null;
+  observacoes?: string | null;
+  dataObservacoes?: Date | null;
 }
