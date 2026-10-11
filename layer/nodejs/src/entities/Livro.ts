@@ -53,16 +53,15 @@ export class Livro extends Entity {
   /**
    * Factory method para criar um novo Livro
    */
-  static create(props: Omit<LivroInterface, 'criadoEm' | 'atualizadoEm'>, id?: string): Livro {
+  static create(
+    props: Omit<LivroInterface, 'isbn' | 'criadoEm' | 'atualizadoEm'> & { isbn?: unknown },
+    id?: string
+  ): Livro {
     this.validarPropriedades(props);
 
     const livroId = id ?? this.generateId().replaceAll('-', '');
     const agora = new Date();
-    const isbn = Object.getOwnPropertyDescriptor(props, 'isbn')
-      ? typeof props.isbn === 'string'
-        ? new ISBN(props.isbn)
-        : new ISBN(Object.getOwnPropertyDescriptor(props.isbn, 'value')?.value ?? '')
-      : new ISBN('');
+    const isbn = new ISBN(props.isbn);
 
     const propsCompletas: LivroInterface = {
       ...props,
@@ -84,9 +83,7 @@ export class Livro extends Entity {
   /**
    * Valida as propriedades antes de criar um Livro
    */
-  private static validarPropriedades(
-    props: Omit<LivroInterface, 'criadoEm' | 'atualizadoEm'>
-  ): void {
+  private static validarPropriedades(props: Pick<LivroInterface, 'anoPublicacao'>): void {
     if (
       props.anoPublicacao &&
       (props.anoPublicacao < 1000 || props.anoPublicacao > new Date().getFullYear())

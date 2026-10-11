@@ -72,6 +72,18 @@ livro.emprestar();
 livro.devolver();
 ```
 
+### ISBN e dados persistidos
+
+O ValueObject `ISBN` centraliza a conversão e a validação de ISBN-10 e ISBN-13.
+Aceita strings, instâncias de `ISBN`, objetos serializados `{ value: "9786587817644" }`
+e números legados inteiros, não negativos e seguros. Valores ausentes, tipos
+incompatíveis e formatos inválidos geram erros explícitos.
+
+`Livro.create` delega essa conversão ao ValueObject. `LivroInterface.isbn` permanece
+uma instância de `ISBN` na entidade, enquanto `LivroAdapter` retorna
+`LivroDTO.isbn` como string. O formato recebido do banco não deve ser tratado
+como um DTO já normalizado.
+
 ## 🏗️ Estrutura
 
 ```

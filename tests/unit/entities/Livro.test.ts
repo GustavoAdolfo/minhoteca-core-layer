@@ -28,6 +28,19 @@ describe('Livro Entity', () => {
     expect(livro.getSituacao()).toBe(StatusLivro.DISPONIVEL);
   });
 
+  it.each([
+    ['9788556710239', '9788556710239'],
+    [{ value: '9786587817644' }, '9786587817644'],
+    [9788535900736, '9788535900736'],
+    [new ISBN('9786587817644'), '9786587817644'],
+  ])('deve delegar a conversão do ISBN %p ao ValueObject', (isbn, esperado) => {
+    const livro = Livro.create({ ...criarLivroProps(), isbn });
+
+    expect(livro.isbn).toBeInstanceOf(ISBN);
+    expect(livro.getISBN()).toBe(esperado);
+    expect(JSON.parse(livro.toJSONString())).toHaveProperty('isbn', esperado);
+  });
+
   it('deve validar ano de publicação', () => {
     const props = { ...criarLivroProps(), anoPublicacao: 999 };
     expect(() => Livro.create(props)).toThrow(LivroInvalidoError);
@@ -240,7 +253,7 @@ describe('Livro Entity', () => {
         editoraId: 'editora-jkl',
         anoPublicacao: 1881,
       } as unknown as LivroInterface);
-    }).toThrow('ISBN inválido');
+    }).toThrow('Tipo ou valor de ISBN inválido.');
   });
 
   it('deve retornar desigualdade para entidades de tipos diferentes', () => {
