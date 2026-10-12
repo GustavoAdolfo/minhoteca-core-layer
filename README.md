@@ -119,6 +119,28 @@ npm run clean       # Limpar dist/
 
 ## 📦 Como Lambda Layer
 
+A distribuição da layer mantém a mesma estrutura do pacote npm:
+
+```text
+nodejs/node_modules/@gustavoadolfo/minhoteca-core-layer/
+├── package.json               # main: layer/nodejs/dist/index.js
+└── layer/nodejs/dist/
+    ├── index.js
+    ├── enums/
+    └── entities/
+```
+
+O Terraform verifica, antes de gerar o ZIP, os imports da raiz do pacote,
+do enum `ListaClassificacaoTipo` e da entidade `ListaClassificacao` utilizados
+pela função administrativa. Isso evita publicar um pacote com caminhos que
+funcionam no npm, mas falham no runtime da Lambda.
+
+Após alterar o empacotamento, publique uma nova versão da core layer e atualize
+as funções consumidoras para usar seu ARN versionado. O Terraform de produção
+da função administrativa consulta a última versão publicada; execute seu deploy
+depois do deploy da core layer. Não é necessário alterar os imports atuais da
+função para corrigir essa incompatibilidade.
+
 A layer é automaticamente publicada quando você cria uma tag:
 
 ```bash
