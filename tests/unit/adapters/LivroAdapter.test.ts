@@ -82,6 +82,33 @@ describe('LivroAdapter', () => {
   });
 
   describe('toDTOList', () => {
+    it('deve serializar datas persistidas sem interromper a listagem', () => {
+      const propsPersistidas: LivroInterface = {
+        ...mockLivroProps,
+        criadoEm: '2024-01-01T10:00:00Z',
+        atualizadoEm: '2024-01-02T15:30:00Z',
+      };
+      const livros = [
+        Livro.create(mockLivroProps, 'livro-1'),
+        Livro.reconstitute('livro-2', propsPersistidas),
+        Livro.create(propsPersistidas, 'livro-3'),
+      ];
+
+      const dtos = LivroAdapter.toDTOList(livros);
+
+      expect(dtos).toHaveLength(3);
+      expect(dtos.map((dto) => dto.id)).toEqual(['livro-1', 'livro-2', 'livro-3']);
+      for (const livro of livros) {
+        expect(livro.getCriadoEm()).toBe('2024-01-01T10:00:00.000Z');
+        expect(livro.getAtualizadoEm()).toBe('2024-01-02T15:30:00.000Z');
+      }
+      for (const dto of dtos) {
+        expect(dto).toBeInstanceOf(LivroDTO);
+        expect(dto).not.toHaveProperty('criadoEm');
+        expect(dto).not.toHaveProperty('atualizadoEm');
+      }
+    });
+
     it('deve converter lista de Livros para lista de DTOs', () => {
       const livros = [
         Livro.create(mockLivroProps, 'livro-1'),

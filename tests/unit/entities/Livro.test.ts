@@ -149,6 +149,59 @@ describe('Livro Entity', () => {
     }, 10);
   });
 
+  describe('datas persistidas', () => {
+    it.each([
+      new Date('2024-01-01T10:00:00.000Z'),
+      '2024-01-01T10:00:00.000Z',
+      '2024-01-01T07:00:00-03:00',
+      1704103200000,
+    ])('deve normalizar a data %p na criação e reconstituição', (data) => {
+      const props = { ...criarLivroProps(), criadoEm: data, atualizadoEm: data };
+
+      for (const livro of [Livro.create(props), Livro.reconstitute('livro-123', props)]) {
+        expect(livro.criadoEm).toBeInstanceOf(Date);
+        expect(livro.atualizadoEm).toBeInstanceOf(Date);
+        expect(livro.getCriadoEm()).toBe('2024-01-01T10:00:00.000Z');
+        expect(livro.getAtualizadoEm()).toBe('2024-01-01T10:00:00.000Z');
+        expect(JSON.parse(livro.toJSONString())).toMatchObject({
+          criadoEm: '2024-01-01T10:00:00.000Z',
+          atualizadoEm: '2024-01-01T10:00:00.000Z',
+        });
+      }
+    });
+
+    it.each([undefined, null])('deve manter o fallback atual para data ausente %p', (data) => {
+      const antes = Date.now();
+      const props = criarLivroProps();
+      Object.assign(props, { criadoEm: data, atualizadoEm: data });
+
+      for (const livro of [Livro.create(props), Livro.reconstitute('livro-123', props)]) {
+        expect(livro.criadoEm.getTime()).toBeGreaterThanOrEqual(antes);
+        expect(livro.atualizadoEm.getTime()).toBeGreaterThanOrEqual(antes);
+        expect(livro.criadoEm.getTime()).toBeLessThanOrEqual(Date.now());
+        expect(livro.atualizadoEm.getTime()).toBeLessThanOrEqual(Date.now());
+      }
+    });
+
+    it.each(['criadoEm', 'atualizadoEm'])('deve preservar timestamp zero em %s', (campo) => {
+      const livro = Livro.reconstitute('livro-123', { ...criarLivroProps(), [campo]: 0 });
+
+      expect(campo === 'criadoEm' ? livro.getCriadoEm() : livro.getAtualizadoEm()).toBe(
+        '1970-01-01T00:00:00.000Z'
+      );
+    });
+
+    it.each(['criadoEm', 'atualizadoEm'])('deve rejeitar valores inválidos em %s', (campo) => {
+      for (const data of ['', 'data-invalida', new Date(NaN), NaN, Infinity, {}, true]) {
+        const props = criarLivroProps();
+        Object.assign(props, { [campo]: data });
+
+        expect(() => Livro.create(props)).toThrow(LivroInvalidoError);
+        expect(() => Livro.reconstitute('livro-123', props)).toThrow(`Data inválida: ${campo}`);
+      }
+    });
+  });
+
   it('deve retornar representação em string', () => {
     const props = criarLivroProps();
     const livro = Livro.create(props);

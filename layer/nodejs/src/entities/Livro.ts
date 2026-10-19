@@ -30,8 +30,8 @@ export class Livro extends Entity {
 
   private constructor(id: string, props: LivroInterface) {
     super(id);
-    this.atualizadoEm = props.atualizadoEm ?? new Date();
-    this.criadoEm = props.criadoEm ?? new Date();
+    this.atualizadoEm = Livro.normalizarData(props.atualizadoEm, 'atualizadoEm');
+    this.criadoEm = Livro.normalizarData(props.criadoEm, 'criadoEm');
     if (this.validarTitulo(props.titulo)) {
       this.titulo = props.titulo;
     }
@@ -78,6 +78,25 @@ export class Livro extends Entity {
    */
   static reconstitute(id: string, props: LivroInterface): Livro {
     return new Livro(id, props);
+  }
+
+  private static normalizarData(valor: unknown, campo: string): Date {
+    if (valor === undefined || valor === null) {
+      return new Date();
+    }
+
+    const data =
+      valor instanceof Date
+        ? valor
+        : typeof valor === 'string' || typeof valor === 'number'
+          ? new Date(valor)
+          : undefined;
+
+    if (!data || Number.isNaN(data.getTime())) {
+      throw new LivroInvalidoError(`Data inválida: ${campo}`);
+    }
+
+    return data;
   }
 
   /**

@@ -14,8 +14,8 @@ export interface LivroInterface {
   situacao: StatusLivro;
   localizacao?: string;
   revisar?: boolean;
-  criadoEm?: Date;
-  atualizadoEm?: Date;
+  criadoEm?: Date | string | number;
+  atualizadoEm?: Date | string | number;
   idioma?: string;
   imagemCapaUrl?: string;
   imagemCapaMiniUrl?: string;
