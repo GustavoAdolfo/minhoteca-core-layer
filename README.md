@@ -84,6 +84,17 @@ uma instância de `ISBN` na entidade, enquanto `LivroAdapter` retorna
 `LivroDTO.isbn` como string. O formato recebido do banco não deve ser tratado
 como um DTO já normalizado.
 
+### Datas de livros persistidos
+
+`Livro.create` e `Livro.reconstitute` normalizam `criadoEm` e `atualizadoEm`
+recebidos como `Date`, string de data (como ISO 8601) ou timestamp em milissegundos.
+Os campos da entidade permanecem como `Date`, e os getters retornam strings ISO,
+preservando o instante recebido. A conversão pelo `LivroAdapter` mantém o contrato
+atual de `LivroDTO`, que não expõe esses campos.
+Datas ausentes (`null` ou `undefined`) mantêm o fallback para o horário atual.
+Valores inválidos geram `LivroInvalidoError` identificando o campo, sem substituir
+silenciosamente uma data persistida inválida.
+
 ## 🏗️ Estrutura
 
 ```
