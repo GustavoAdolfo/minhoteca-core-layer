@@ -169,7 +169,7 @@ export class Livro extends Entity {
     return this.atualizadoEm.toISOString();
   }
   getCriadoEm(): string {
-    return this.criadoEm.toISOString();
+    return this.criadoEm?.toISOString() ?? '';
   }
 
   getRevisar(): boolean | undefined {
